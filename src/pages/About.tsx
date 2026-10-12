@@ -35,6 +35,12 @@ const technicalDomains = [
   },
 ]
 
+const marqueeTools = [
+  'VS Code', 'Figma', 'Postman', 'MySQL', 'Laravel', 'React',
+  'TypeScript', 'MongoDB', 'Tailwind CSS', 'Node.js', 'Python',
+  'Vue.js', 'Angular', 'Git', 'GitHub', 'REST APIs', 'PHP'
+]
+
 const trajectorySteps = [
   {
     step: '01',
@@ -126,7 +132,7 @@ export default function About() {
           }
         })
       },
-      { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
+      { threshold: 0.02, rootMargin: '0px 0px 120px 0px' }
     )
 
     const els = sectionRef.current?.querySelectorAll('.ed-reveal')
@@ -287,15 +293,27 @@ export default function About() {
             </div>
           </div>
         </section>
+      </div>
 
-        {/* ── SLIM TOOLS MARQUEE DIVIDER ── */}
-        <div className="ed-marquee-divider ed-reveal" aria-hidden="true">
-          <div className="ed-marquee-track">
-            <span>VS Code</span> • <span>Figma</span> • <span>Postman</span> • <span>MySQL</span> • <span>Laravel</span> • <span>React</span> • <span>TypeScript</span> • <span>MongoDB</span> • <span>Tailwind CSS</span> • <span>Node.js</span> • <span>Python</span> • <span>Vue.js</span> • <span>Angular</span> •
-            <span>VS Code</span> • <span>Figma</span> • <span>Postman</span> • <span>MySQL</span> • <span>Laravel</span> • <span>React</span> • <span>TypeScript</span> • <span>MongoDB</span> • <span>Tailwind CSS</span> • <span>Node.js</span> • <span>Python</span> • <span>Vue.js</span> • <span>Angular</span>
-          </div>
+      {/* ── FULL WIDTH TOOLS MARQUEE DIVIDER (Edge-to-Edge) ── */}
+      <div className="ed-marquee-divider" aria-hidden="true">
+        <div className="ed-marquee-track">
+          {[...marqueeTools, ...marqueeTools].map((tool, i) => (
+            <span key={`t1-${i}`} className="ed-marquee-item">
+              <span className="marquee-tool-name">{tool}</span>
+              <span className="marquee-sep">•</span>
+            </span>
+          ))}
+          {[...marqueeTools, ...marqueeTools].map((tool, i) => (
+            <span key={`t2-${i}`} className="ed-marquee-item">
+              <span className="marquee-tool-name">{tool}</span>
+              <span className="marquee-sep">•</span>
+            </span>
+          ))}
         </div>
+      </div>
 
+      <div className="about-editorial-container">
         {/* ── 03: MY JOURNEY (Single Connected Editorial Timeline) ── */}
         <section className="ed-section ed-journey-section ed-reveal">
           <div className="ed-section-header">
