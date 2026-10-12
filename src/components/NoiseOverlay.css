@@ -1,0 +1,21 @@
+/* ── GLOBAL STATIC / FILM NOISE OVERLAY ─────────────────── */
+.global-static-noise-overlay {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  user-select: none;
+  z-index: 9999;
+  opacity: 0.065; /* Subtle, tactile, high-end film grain texture */
+  background-repeat: repeat;
+  background-size: 160px 160px;
+  will-change: background-image;
+}
+
+/* Reduced motion preference keeps single static frame without cycling */
+@media (prefers-reduced-motion: reduce) {
+  .global-static-noise-overlay {
+    animation: none !important;
+  }
+}

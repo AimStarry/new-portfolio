@@ -1,0 +1,243 @@
+/* ═══════════════════════════════════════════════════════
+   SIDE SCROLL INDICATOR
+   Floats at the side, hides on scroll, reappears when idle
+   ═══════════════════════════════════════════════════════ */
+
+.side-scroll-indicator {
+  position: fixed;
+  right: 26px;
+  bottom: 32px;
+  z-index: 85;
+  width: 40px;
+  height: 136px;
+  border-radius: 9999px;
+  background: rgba(8, 7, 20, 0.78);
+  border: 1px solid rgba(16, 185, 129, 0.28);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.5),
+    0 0 16px rgba(16, 185, 129, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+  box-sizing: border-box;
+  cursor: pointer;
+  user-select: none;
+  outline: none;
+  color: #34D399;
+  transform-origin: center bottom;
+  transition:
+    opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.3s ease,
+    box-shadow 0.3s ease,
+    background 0.3s ease;
+}
+
+/* ── States: Visible & Hidden ── */
+.side-scroll-indicator.is-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.side-scroll-indicator.is-hidden {
+  opacity: 0;
+  transform: translateY(14px) scale(0.92);
+  pointer-events: none;
+}
+
+/* ── Hover & Active ── */
+.side-scroll-indicator:hover {
+  background: rgba(12, 10, 28, 0.9);
+  border-color: rgba(52, 211, 153, 0.65);
+  box-shadow:
+    0 14px 40px rgba(0, 0, 0, 0.6),
+    0 0 24px rgba(16, 185, 129, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transform: translateY(-3px) scale(1.04);
+}
+
+.side-scroll-indicator:active {
+  transform: translateY(0) scale(0.97);
+}
+
+.side-scroll-indicator:focus-visible {
+  border-color: #34D399;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.4);
+}
+
+/* ── Glow Ring behind the pill on hover ── */
+.ssi-glow-ring {
+  position: absolute;
+  inset: -2px;
+  border-radius: 9999px;
+  background: radial-gradient(circle, rgba(16, 185, 129, 0.25) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.side-scroll-indicator:hover .ssi-glow-ring {
+  opacity: 1;
+}
+
+/* ── Mouse Icon ── */
+.ssi-icon-wrap {
+  width: 18px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.ssi-mouse {
+  width: 14px;
+  height: 21px;
+  border: 1.5px solid rgba(52, 211, 153, 0.85);
+  border-radius: 9px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 3px;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease;
+}
+
+.side-scroll-indicator:hover .ssi-mouse {
+  border-color: #34D399;
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+}
+
+.ssi-wheel {
+  width: 2.5px;
+  height: 5px;
+  background: #34D399;
+  border-radius: 2px;
+  animation: ssiWheelAnim 1.6s ease-in-out infinite;
+  box-shadow: 0 0 6px rgba(52, 211, 153, 0.8);
+}
+
+@keyframes ssiWheelAnim {
+  0% { transform: translateY(0); opacity: 1; }
+  60% { transform: translateY(6px); opacity: 0; }
+  61% { transform: translateY(-2px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+.ssi-arrow-up {
+  color: #34D399;
+  animation: ssiArrowUpBounce 1.6s ease-in-out infinite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@keyframes ssiArrowUpBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+/* ── Vertical Micro Progress Track ── */
+.ssi-track {
+  width: 2px;
+  height: 38px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 9999px;
+  overflow: hidden;
+  position: relative;
+  margin: 4px 0;
+}
+
+.ssi-progress-bar {
+  width: 100%;
+  background: linear-gradient(180deg, #10B981, #34D399);
+  border-radius: 9999px;
+  transition: height 0.25s ease-out;
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.8);
+}
+
+/* ── Meta: Label & Chevron ── */
+.ssi-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.ssi-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: rgba(255, 255, 255, 0.7);
+  text-transform: uppercase;
+  transition: color 0.3s ease;
+}
+
+.side-scroll-indicator:hover .ssi-label {
+  color: #34D399;
+}
+
+.ssi-chevron {
+  color: #34D399;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ssi-chevron.down {
+  animation: ssiChevronDownBounce 1.6s ease-in-out infinite;
+}
+
+.ssi-chevron.up {
+  animation: ssiChevronUpBounce 1.6s ease-in-out infinite;
+}
+
+@keyframes ssiChevronDownBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(3px); }
+}
+
+@keyframes ssiChevronUpBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+/* ── Responsive adjustments ── */
+@media (max-width: 768px) {
+  .side-scroll-indicator {
+    right: 16px;
+    bottom: 24px;
+    width: 36px;
+    height: 124px;
+    padding: 8px 0;
+  }
+  .ssi-mouse {
+    width: 12px;
+    height: 18px;
+  }
+  .ssi-track {
+    height: 32px;
+  }
+  .ssi-label {
+    font-size: 0.50rem;
+    letter-spacing: 1.2px;
+  }
+}
+
+@media (max-width: 480px) {
+  .side-scroll-indicator {
+    right: 12px;
+    bottom: 18px;
+    width: 32px;
+    height: 110px;
+  }
+}

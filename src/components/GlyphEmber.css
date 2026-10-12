@@ -1,0 +1,29 @@
+.glyph-ember-container {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.glyph-ember-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: auto; /* allows interactive mouse hover if desired, or set to none */
+}
+
+/* Subtle top vignette so flames dissolve organically into background */
+.glyph-ember-vignette {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(6, 34, 26, 0.95) 0%,
+    rgba(6, 34, 26, 0.4) 35%,
+    transparent 65%
+  );
+  pointer-events: none;
+}
