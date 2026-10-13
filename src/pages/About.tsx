@@ -265,7 +265,7 @@ export default function About() {
 
         {/* ── 02: TECHNICAL IDENTITY / DEVELOPER WORKSPACE (Hierarchical Layout) ── */}
         <section className="ed-section ed-tech-section ed-reveal">
-          <div className="ed-section-header">
+          <div className="ed-section-header is-right-aligned">
             <div className="ed-section-eyebrow">
               <span className="ed-eyebrow-line" />
               <span className="ed-eyebrow-text">02 // TECHNICAL IDENTITY</span>
@@ -341,23 +341,26 @@ export default function About() {
           </div>
 
           <div className="ed-timeline-spine">
-            {/* Timeline Event 1: Internship (with Project Callout) */}
-            <div className="ed-timeline-entry">
-              <div className="timeline-node">
-                <span className="node-ring" />
-                <span className="node-dot" />
-              </div>
-              <div className="timeline-content-block">
+            {/* Timeline Event 1: Internship (Left Meta, Right Featured Project) */}
+            <div className="ed-timeline-entry is-entry-left">
+              <div className="timeline-sidebar-col">
+                <div className="timeline-node-indicator">
+                  <span className="node-ring" />
+                  <span className="node-dot" />
+                  <span className="timeline-node-line" />
+                </div>
                 <div className="timeline-meta-row">
                   <span className="timeline-period-pill">JUNE 2026 — SEPTEMBER 2026</span>
                   <span className="timeline-org-type">PRODUCTION INTERNSHIP</span>
                 </div>
-
                 <h3 className="timeline-org-name">Office of Institutional Effectiveness</h3>
                 <h4 className="timeline-role-title">
-                  Web Developer Intern &amp; Database Architect <span className="timeline-sub-tag">Holy Angel University</span>
+                  Web Developer Intern &amp; Database Architect
+                  <span className="timeline-sub-tag">Holy Angel University</span>
                 </h4>
+              </div>
 
+              <div className="timeline-main-col">
                 <p className="timeline-narrative">
                   Architected and engineered the university-wide <strong>Accreditation Management Portal</strong> used to track real-time compliance across 4 major accrediting bodies: PAASCU, AUN-QA, CHED, and PACUCOA. Designed normalized relational MySQL database schemas, implemented role-based access control (QA Admins, Deans, Heads of Units), and developed evidence repositories.
                 </p>
@@ -388,23 +391,9 @@ export default function About() {
               </div>
             </div>
 
-            {/* Timeline Event 2: Higher Education */}
-            <div className="ed-timeline-entry">
-              <div className="timeline-node">
-                <span className="node-ring" />
-                <span className="node-dot" />
-              </div>
-              <div className="timeline-content-block">
-                <div className="timeline-meta-row">
-                  <span className="timeline-period-pill">2023 — PRESENT</span>
-                  <span className="timeline-org-type">HIGHER EDUCATION</span>
-                </div>
-
-                <h3 className="timeline-org-name">Holy Angel University</h3>
-                <h4 className="timeline-role-title">
-                  Bachelor of Science in Information Technology <span className="timeline-sub-tag">Web Development Specialization</span>
-                </h4>
-
+            {/* Timeline Event 2: Higher Education (Alternating: Left Narrative, Right Meta & Honors) */}
+            <div className="ed-timeline-entry is-entry-right">
+              <div className="timeline-main-col">
                 <p className="timeline-narrative">
                   4th-year student maintaining a <strong>1.5 Cumulative GWA</strong> with an emphasis on relational database management, data normalization, and client-side web architectures. Engineered production capstone systems, e-libraries, and RESTful APIs across modern web stacks.
                 </p>
@@ -420,28 +409,56 @@ export default function About() {
                   </div>
                 </div>
               </div>
+
+              <div className="timeline-sidebar-col">
+                <div className="timeline-node-indicator">
+                  <span className="node-ring" />
+                  <span className="node-dot" />
+                  <span className="timeline-node-line" />
+                </div>
+                <div className="timeline-meta-row">
+                  <span className="timeline-period-pill">2023 — PRESENT</span>
+                  <span className="timeline-org-type">HIGHER EDUCATION</span>
+                </div>
+                <h3 className="timeline-org-name">Holy Angel University</h3>
+                <h4 className="timeline-role-title">
+                  Bachelor of Science in Information Technology
+                  <span className="timeline-sub-tag">Web Development Specialization</span>
+                </h4>
+                <div className="timeline-highlight-pill">
+                  <i className="fas fa-star" />
+                  <span>1.5 CUMULATIVE GWA</span>
+                </div>
+              </div>
             </div>
 
-            {/* Timeline Event 3: Senior High School */}
-            <div className="ed-timeline-entry">
-              <div className="timeline-node">
-                <span className="node-ring" />
-                <span className="node-dot" />
-              </div>
-              <div className="timeline-content-block">
+            {/* Timeline Event 3: Senior High School (Left Meta, Right Narrative) */}
+            <div className="ed-timeline-entry is-entry-left">
+              <div className="timeline-sidebar-col">
+                <div className="timeline-node-indicator">
+                  <span className="node-ring" />
+                  <span className="node-dot" />
+                  <span className="timeline-node-line" />
+                </div>
                 <div className="timeline-meta-row">
                   <span className="timeline-period-pill">2021 — 2023</span>
                   <span className="timeline-org-type">FOUNDATIONAL</span>
                 </div>
-
                 <h3 className="timeline-org-name">Holy Angel University</h3>
                 <h4 className="timeline-role-title">
-                  Senior High School <span className="timeline-sub-tag">General Academic Strand</span>
+                  Senior High School
+                  <span className="timeline-sub-tag">General Academic Strand</span>
                 </h4>
+              </div>
 
+              <div className="timeline-main-col">
                 <p className="timeline-narrative">
                   Graduated General Academic Strand with academic honors. Built the logical reasoning, structured problem-solving, and mathematical foundations that directed my transition into software engineering.
                 </p>
+                <div className="timeline-highlight-pill honors-pill">
+                  <i className="fas fa-award" />
+                  <span>GRADUATED WITH ACADEMIC HONORS</span>
+                </div>
               </div>
             </div>
           </div>
@@ -485,9 +502,9 @@ export default function About() {
           />
         </section>
 
-        {/* ── 05: WHERE I'M HEADED (Connected Horizontal Progression) ── */}
+        {/* ── 05: WHERE I'M HEADED (Connected Horizontal Progression - Right Aligned) ── */}
         <section className="ed-section ed-trajectory-section ed-reveal">
-          <div className="ed-section-header">
+          <div className="ed-section-header is-right-aligned">
             <div className="ed-section-eyebrow">
               <span className="ed-eyebrow-line" />
               <span className="ed-eyebrow-text">05 // FUTURE TRAJECTORY</span>
@@ -498,16 +515,25 @@ export default function About() {
           </div>
 
           <div className="ed-trajectory-progression">
-            <div className="progression-spine-line" aria-hidden="true" />
-
             <div className="progression-steps-track">
               {trajectorySteps.map((step, idx) => (
                 <div key={idx} className="progression-step-col">
-                  <div className="progression-milestone-marker">
-                    <div className="milestone-dot-ring">
-                      <span className="milestone-dot-inner" />
+                  <div className="progression-milestone-header">
+                    <div className="milestone-badge-wrap">
+                      <div className="milestone-dot-ring">
+                        <span className="milestone-dot-inner" />
+                      </div>
+                      <span className="milestone-num">{step.step}</span>
                     </div>
-                    <span className="milestone-num">{step.step}</span>
+
+                    {idx < trajectorySteps.length - 1 && (
+                      <div className="progression-connector" aria-hidden="true">
+                        <div className="connector-line-glow" />
+                        <span className="connector-arrow">
+                          <i className="fas fa-chevron-right" />
+                        </span>
+                      </div>
+                    )}
                   </div>
 
                   <div className="progression-card-inner">

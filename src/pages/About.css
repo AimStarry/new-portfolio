@@ -84,6 +84,19 @@
   margin-bottom: clamp(28px, 4.5vh, 44px);
 }
 
+.ed-section-header.is-right-aligned {
+  align-items: flex-end;
+  text-align: right;
+}
+
+.ed-section-header.is-right-aligned .ed-section-eyebrow {
+  flex-direction: row-reverse;
+}
+
+.ed-section-header.is-right-aligned .ed-eyebrow-line {
+  background: linear-gradient(270deg, #10B981 0%, rgba(16, 185, 129, 0) 100%);
+}
+
 .ed-section-title {
   font-size: clamp(2.2rem, 3.8vw, 3.6rem);
   font-weight: 800;
@@ -596,7 +609,7 @@
   100% { transform: translateX(-50%); }
 }
 
-/* ── 03: MY JOURNEY (Priority 03: Simplified Copy & Hierarchy) ── */
+/* ── 03: MY JOURNEY (Alternating Two-Column Editorial Timeline) ── */
 .ed-journey-section {
   width: 100%;
 }
@@ -605,58 +618,93 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: clamp(40px, 6vh, 64px);
-  padding-left: clamp(28px, 4vw, 48px);
-  border-left: 2px solid rgba(16, 185, 129, 0.25);
-  margin-left: clamp(8px, 2vw, 24px);
+  gap: clamp(48px, 6vh, 64px);
+  width: 100%;
 }
 
 .ed-timeline-entry {
   position: relative;
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: clamp(28px, 4vw, 56px);
+  align-items: start;
+  padding-bottom: clamp(36px, 5vh, 48px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.ed-timeline-entry:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+/* Alternating Entry: Left Content, Right Meta */
+.ed-timeline-entry.is-entry-right {
+  grid-template-columns: 1fr 360px;
+}
+
+.timeline-sidebar-col {
   display: flex;
   flex-direction: column;
+  gap: 10px;
+  position: relative;
 }
 
-.timeline-node {
-  position: absolute;
-  left: calc(-1 * clamp(28px, 4vw, 48px) - 9px);
-  top: 4px;
-  width: 16px;
-  height: 16px;
-  display: flex;
+.timeline-node-indicator {
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
+  gap: 10px;
+  margin-bottom: 4px;
 }
 
-.node-ring {
-  position: absolute;
+.timeline-node-indicator .node-ring {
+  position: relative;
   width: 16px;
   height: 16px;
   border-radius: 50%;
   border: 2px solid #10B981;
   background: #0a091a;
   box-shadow: 0 0 12px rgba(16, 185, 129, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
-.node-dot {
-  position: relative;
+.timeline-node-indicator .node-dot {
   width: 6px;
   height: 6px;
   border-radius: 50%;
   background: #34D399;
 }
 
-.timeline-content-block {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+.timeline-node-line {
+  width: 36px;
+  height: 1px;
+  background: linear-gradient(90deg, #10B981 0%, transparent 100%);
+}
+
+.is-entry-right .timeline-sidebar-col .timeline-node-indicator {
+  flex-direction: row-reverse;
+}
+
+.is-entry-right .timeline-sidebar-col .timeline-node-line {
+  background: linear-gradient(270deg, #10B981 0%, transparent 100%);
+}
+
+.is-entry-right .timeline-sidebar-col {
+  text-align: right;
+  align-items: flex-end;
 }
 
 .timeline-meta-row {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
   flex-wrap: wrap;
+}
+
+.is-entry-right .timeline-sidebar-col .timeline-meta-row {
+  justify-content: flex-end;
 }
 
 .timeline-period-pill {
@@ -698,17 +746,51 @@
   flex-wrap: wrap;
 }
 
+.is-entry-right .timeline-sidebar-col .timeline-role-title {
+  justify-content: flex-end;
+}
+
 .timeline-sub-tag {
   font-size: 0.84rem;
   color: rgba(255, 255, 255, 0.55);
   font-weight: 400;
 }
 
+.timeline-highlight-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.74rem;
+  letter-spacing: 1.5px;
+  font-weight: 700;
+  color: #F59E0B;
+  background: rgba(245, 158, 11, 0.12);
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  padding: 5px 12px;
+  border-radius: 8px;
+  width: fit-content;
+  margin-top: 6px;
+  box-shadow: 0 4px 14px rgba(245, 158, 11, 0.15);
+}
+
+.timeline-highlight-pill.honors-pill {
+  color: #34D399;
+  background: rgba(16, 185, 129, 0.12);
+  border-color: rgba(16, 185, 129, 0.35);
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.15);
+}
+
+.timeline-main-col {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
 .timeline-narrative {
   font-size: clamp(0.98rem, 1.1vw, 1.06rem);
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(255, 255, 255, 0.82);
   line-height: 1.75;
-  max-width: 900px;
   margin: 0;
 }
 
@@ -738,7 +820,7 @@
   font-size: 0.85rem;
 }
 
-/* Featured Project Callout in Timeline */
+/* Featured Project Callout in Timeline (Spans full right column width) */
 .ed-project-callout {
   display: grid;
   grid-template-columns: 240px 1fr;
@@ -747,10 +829,11 @@
   border: 1px solid rgba(16, 185, 129, 0.3);
   border-radius: 18px;
   padding: 18px;
-  margin-top: 10px;
-  max-width: 820px;
+  margin-top: 8px;
+  width: 100%;
   backdrop-filter: blur(10px);
   box-shadow: 0 14px 35px rgba(0, 0, 0, 0.4);
+  box-sizing: border-box;
 }
 
 .callout-img-col {
@@ -912,7 +995,7 @@
 .tier-4 { color: #FB7185; background: rgba(251, 113, 133, 0.1); border: 1px solid rgba(251, 113, 133, 0.3); }
 .tier-4 .tier-dot { background: #FB7185; }
 
-/* ── 05: WHERE I'M HEADED (Priority 04: Connected Horizontal Progression) ── */
+/* ── 05: WHERE I'M HEADED (Connected Step-by-Step Progression) ── */
 .ed-trajectory-section {
   width: 100%;
 }
@@ -920,37 +1003,36 @@
 .ed-trajectory-progression {
   position: relative;
   width: 100%;
-  margin-top: 20px;
-}
-
-.progression-spine-line {
-  position: absolute;
-  top: 18px;
-  left: 24px;
-  right: 24px;
-  height: 2px;
-  background: linear-gradient(90deg, #10B981 0%, #34D399 50%, rgba(16, 185, 129, 0.3) 100%);
-  z-index: 1;
+  margin-top: 16px;
 }
 
 .progression-steps-track {
-  position: relative;
-  z-index: 2;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: clamp(24px, 3.5vw, 48px);
+  gap: clamp(20px, 3.5vw, 40px);
 }
 
 .progression-step-col {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  min-width: 0;
 }
 
-.progression-milestone-marker {
+.progression-milestone-header {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  position: relative;
+  min-height: 40px;
+}
+
+.milestone-badge-wrap {
   display: flex;
   align-items: center;
   gap: 12px;
+  flex-shrink: 0;
+  z-index: 2;
 }
 
 .milestone-dot-ring {
@@ -979,6 +1061,32 @@
   font-weight: 800;
   color: #10B981;
   letter-spacing: -0.02em;
+}
+
+/* Connects cleanly between 01 and 02, and 02 and 03. No line past 03! */
+.progression-connector {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: 12px;
+  position: relative;
+  z-index: 1;
+}
+
+.connector-line-glow {
+  flex: 1;
+  height: 2px;
+  background: linear-gradient(90deg, #10B981 0%, rgba(52, 211, 153, 0.7) 70%, rgba(16, 185, 129, 0.25) 100%);
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.45);
+}
+
+.connector-arrow {
+  color: #34D399;
+  font-size: 0.72rem;
+  opacity: 0.95;
+  filter: drop-shadow(0 0 6px rgba(16, 185, 129, 0.7));
+  margin-right: -2px;
 }
 
 /* Reduced card borders, letting the progression line lead */
@@ -1224,11 +1332,32 @@
   .ed-domains-grid {
     grid-template-columns: 1fr;
   }
+  .ed-timeline-entry,
+  .ed-timeline-entry.is-entry-right {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .is-entry-right .timeline-sidebar-col {
+    text-align: left;
+    align-items: flex-start;
+  }
+  .is-entry-right .timeline-sidebar-col .timeline-meta-row {
+    justify-content: flex-start;
+  }
+  .is-entry-right .timeline-sidebar-col .timeline-role-title {
+    justify-content: flex-start;
+  }
+  .is-entry-right .timeline-sidebar-col .timeline-node-indicator {
+    flex-direction: row;
+  }
+  .is-entry-right .timeline-sidebar-col .timeline-node-line {
+    background: linear-gradient(90deg, #10B981 0%, transparent 100%);
+  }
   .progression-steps-track {
     grid-template-columns: 1fr;
-    gap: 32px;
+    gap: 28px;
   }
-  .progression-spine-line {
+  .progression-connector {
     display: none;
   }
   .ed-quotes-container {
