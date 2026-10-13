@@ -1,6 +1,6 @@
 /* ═══════════════════════════════════════════════════════════════
-   CINEMATIC PORTFOLIO INTRO
-   Black Fairy Silhouette, Moving Background Light & Tap Typography
+   OPTIMIZED CINEMATIC PORTFOLIO INTRO
+   Hardware Accelerated, Direct DOM Composite, Fast Pacing
    ═══════════════════════════════════════════════════════════════ */
 
 .magical-intro-overlay {
@@ -17,14 +17,15 @@
   user-select: none;
   cursor: pointer;
   opacity: 1;
-  transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
-              filter 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+              filter 0.45s cubic-bezier(0.16, 1, 0.3, 1);
   will-change: opacity, filter;
+  contain: layout paint;
 }
 
 .magical-intro-overlay.fade-out {
   opacity: 0;
-  filter: blur(10px);
+  filter: blur(8px);
   pointer-events: none;
 }
 
@@ -41,15 +42,20 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 600px;
-  height: 400px;
+  width: 580px;
+  height: 380px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(16, 185, 129, 0.12) 0%, rgba(6, 78, 59, 0.05) 50%, transparent 75%);
-  filter: blur(90px);
+  background: radial-gradient(
+    circle,
+    rgba(16, 185, 129, 0.12) 0%,
+    rgba(6, 78, 59, 0.05) 50%,
+    transparent 75%
+  );
+  filter: blur(40px);
   pointer-events: none;
 }
 
-/* ── THE LIGHT IN THE BACKGROUND FOLLOWING THE FAIRY ─────── */
+/* ── HARDWARE-ACCELERATED FOLLOWING BACKGROUND LIGHT ─────── */
 .intro-following-light {
   position: absolute;
   top: 0;
@@ -59,61 +65,64 @@
   z-index: 2;
   pointer-events: none;
   will-change: transform;
+  transform: translate3d(-200px, -200px, 0);
 }
 
+/* Pre-feathered radial gradients for high-speed GPU rendering */
 .light-core-glow {
   position: absolute;
-  width: 160px;
-  height: 160px;
+  width: 150px;
+  height: 150px;
   border-radius: 50%;
   background: radial-gradient(
     circle,
     rgba(254, 240, 138, 0.95) 0%,
-    rgba(245, 158, 11, 0.75) 30%,
-    rgba(16, 185, 129, 0.45) 60%,
-    transparent 80%
+    rgba(245, 158, 11, 0.70) 25%,
+    rgba(16, 185, 129, 0.35) 55%,
+    transparent 75%
   );
-  filter: blur(35px);
+  filter: blur(14px);
   transform: translate(-50%, -50%);
 }
 
 .light-emerald-halo {
   position: absolute;
-  width: 320px;
-  height: 320px;
+  width: 280px;
+  height: 280px;
   border-radius: 50%;
   background: radial-gradient(
     circle,
-    rgba(52, 211, 153, 0.5) 0%,
-    rgba(5, 150, 105, 0.25) 50%,
+    rgba(52, 211, 153, 0.45) 0%,
+    rgba(5, 150, 105, 0.18) 50%,
     transparent 75%
   );
-  filter: blur(65px);
+  filter: blur(25px);
   transform: translate(-50%, -50%);
-  animation: haloBreathe 2s ease-in-out infinite alternate;
+  animation: haloBreathe 1.8s ease-in-out infinite alternate;
 }
 
 .light-amber-halo {
   position: absolute;
-  width: 220px;
-  height: 220px;
+  width: 190px;
+  height: 190px;
   border-radius: 50%;
   background: radial-gradient(
     circle,
-    rgba(245, 158, 11, 0.45) 0%,
+    rgba(245, 158, 11, 0.4) 0%,
+    rgba(245, 158, 11, 0.1) 50%,
     transparent 70%
   );
-  filter: blur(45px);
+  filter: blur(18px);
   transform: translate(-50%, -50%);
 }
 
 @keyframes haloBreathe {
   0% {
-    transform: translate(-50%, -50%) scale(0.9);
-    opacity: 0.7;
+    transform: translate(-50%, -50%) scale(0.92);
+    opacity: 0.75;
   }
   100% {
-    transform: translate(-50%, -50%) scale(1.15);
+    transform: translate(-50%, -50%) scale(1.1);
     opacity: 1;
   }
 }
@@ -132,8 +141,8 @@
   position: absolute;
   border-radius: 50%;
   border: 1.5px solid rgba(52, 211, 153, 0.85);
-  box-shadow: 0 0 25px rgba(52, 211, 153, 0.7),
-              inset 0 0 15px rgba(245, 158, 11, 0.4);
+  box-shadow: 0 0 20px rgba(52, 211, 153, 0.65),
+              inset 0 0 12px rgba(245, 158, 11, 0.35);
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%) scale(0);
@@ -141,15 +150,15 @@
 }
 
 .wave-1 {
-  width: 140px;
-  height: 140px;
-  animation: tapRipple 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  width: 130px;
+  height: 130px;
+  animation: tapRipple 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .wave-2 {
-  width: 220px;
-  height: 220px;
-  animation: tapRipple 0.95s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards;
+  width: 200px;
+  height: 200px;
+  animation: tapRipple 0.75s cubic-bezier(0.16, 1, 0.3, 1) 0.08s forwards;
   border-color: rgba(245, 158, 11, 0.6);
 }
 
@@ -159,22 +168,22 @@
     opacity: 1;
   }
   100% {
-    transform: translate(-50%, -50%) scale(1.6);
+    transform: translate(-50%, -50%) scale(1.5);
     opacity: 0;
   }
 }
 
 .tap-contact-flash {
   position: absolute;
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
-  background: radial-gradient(circle, #FFFFFF 0%, #FEF08A 40%, transparent 80%);
-  filter: blur(6px);
+  background: radial-gradient(circle, #FFFFFF 0%, #FEF08A 45%, transparent 80%);
+  filter: blur(4px);
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  animation: tapFlash 0.5s ease-out forwards;
+  animation: tapFlash 0.4s ease-out forwards;
 }
 
 @keyframes tapFlash {
@@ -183,7 +192,7 @@
     opacity: 1;
   }
   100% {
-    transform: translate(-50%, -50%) scale(2.2);
+    transform: translate(-50%, -50%) scale(2);
     opacity: 0;
   }
 }
@@ -205,9 +214,8 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: 16px;
-  padding: 30px 40px;
-  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  gap: 14px;
+  padding: 24px 36px;
 }
 
 /* Ambient Backlight that blooms when tapped */
@@ -215,20 +223,20 @@
   position: absolute;
   top: 45%;
   left: 50%;
-  transform: translate(-50%, -50%) scale(0.8);
-  width: 500px;
-  height: 220px;
+  transform: translate(-50%, -50%) scale(0.85);
+  width: 480px;
+  height: 200px;
   border-radius: 50%;
   background: radial-gradient(
     circle,
-    rgba(16, 185, 129, 0.45) 0%,
-    rgba(245, 158, 11, 0.25) 45%,
+    rgba(16, 185, 129, 0.42) 0%,
+    rgba(245, 158, 11, 0.22) 45%,
     transparent 75%
   );
-  filter: blur(70px);
+  filter: blur(35px);
   opacity: 0;
-  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
   pointer-events: none;
 }
 
@@ -240,10 +248,10 @@
 /* Main Name Headline */
 .intro-name-headline {
   font-family: 'Lexend', -apple-system, sans-serif;
-  font-size: clamp(2.4rem, 5.2vw, 4.4rem);
+  font-size: clamp(2.3rem, 5.2vw, 4.2rem);
   font-weight: 800;
   letter-spacing: 0.28em;
-  text-indent: 0.28em; /* Optical balance for wide letter-spacing */
+  text-indent: 0.28em;
   margin: 0;
   display: inline-flex;
   align-items: center;
@@ -251,53 +259,41 @@
   flex-wrap: nowrap;
   position: relative;
   z-index: 2;
-  /* Slumbering state before the tap: subtle dark silhouette */
   color: rgba(255, 255, 255, 0.10);
-  text-shadow: none;
-  transition: color 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-              text-shadow 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: color 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+              text-shadow 0.45s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.word-aimee {
-  transition: color 0.5s ease, text-shadow 0.5s ease;
-}
-
-.word-pangan {
-  transition: color 0.6s ease, text-shadow 0.6s ease;
-}
-
-/* When the fairy taps the typography: IT LIGHTS UP! */
 .intro-typography-hero.lit-up .intro-name-headline {
   color: #FFFFFF;
-  text-shadow: 0 4px 25px rgba(0, 0, 0, 0.9),
-               0 0 35px rgba(16, 185, 129, 0.6),
-               0 0 65px rgba(16, 185, 129, 0.35);
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.85),
+               0 0 30px rgba(16, 185, 129, 0.55);
 }
 
 .intro-typography-hero.lit-up .word-aimee {
   color: #FFFFFF;
-  text-shadow: 0 0 30px rgba(255, 255, 255, 0.8),
-               0 0 50px rgba(52, 211, 153, 0.6);
+  text-shadow: 0 0 25px rgba(255, 255, 255, 0.8),
+               0 0 45px rgba(52, 211, 153, 0.55);
 }
 
 .intro-typography-hero.lit-up .word-pangan {
   background: linear-gradient(135deg, #10B981 0%, #34D399 50%, #F59E0B 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 0 25px rgba(16, 185, 129, 0.7));
+  filter: drop-shadow(0 0 20px rgba(16, 185, 129, 0.65));
 }
 
-/* Shimmer Wave sweeping across the typography on light-up */
+/* Shimmer Sweep */
 .typography-shimmer-sweep {
   position: absolute;
   top: 0;
-  left: -100%;
+  left: -80%;
   width: 50%;
   height: 100%;
   background: linear-gradient(
     90deg,
     transparent 0%,
-    rgba(255, 255, 255, 0.45) 50%,
+    rgba(255, 255, 255, 0.4) 50%,
     transparent 100%
   );
   transform: skewX(-20deg);
@@ -307,7 +303,7 @@
 
 .intro-typography-hero.lit-up .typography-shimmer-sweep {
   opacity: 1;
-  animation: textShimmerSweep 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards;
+  animation: textShimmerSweep 0.95s cubic-bezier(0.16, 1, 0.3, 1) 0.05s forwards;
 }
 
 @keyframes textShimmerSweep {
@@ -315,26 +311,26 @@
     left: -80%;
   }
   100% {
-    left: 180%;
+    left: 170%;
   }
 }
 
-/* Subtitle Row (Slides up and fades in upon lighting up) */
+/* Subtitle Row */
 .intro-subtitle-row {
   display: inline-flex;
   align-items: center;
   gap: 12px;
   font-family: 'DM Mono', monospace;
-  font-size: clamp(0.72rem, 0.95vw, 0.85rem);
+  font-size: clamp(0.70rem, 0.92vw, 0.82rem);
   letter-spacing: 2px;
   color: rgba(255, 255, 255, 0.75);
   margin: 0;
   position: relative;
   z-index: 2;
   opacity: 0;
-  transform: translateY(14px);
-  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.25s,
-              transform 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.25s;
+  transform: translateY(12px);
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.18s,
+              transform 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.18s;
 }
 
 .intro-typography-hero.lit-up .intro-subtitle-row {
@@ -368,10 +364,9 @@
   left: 0;
   z-index: 5;
   pointer-events: none;
-  will-change: transform;
-  /* Pure crisp black silhouette with subtle dark edge definition */
-  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.6));
-  transition: transform 0.04s linear;
+  will-change: transform, opacity;
+  transform: translate3d(-100px, -100px, 0);
+  opacity: 0;
 }
 
 /* ── SKIP BUTTON ─────────────────────────────────────────── */
@@ -383,9 +378,9 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: rgba(14, 13, 30, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  color: rgba(255, 255, 255, 0.7);
+  background: rgba(14, 13, 30, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: rgba(255, 255, 255, 0.75);
   padding: 8px 16px;
   border-radius: 9999px;
   font-family: 'DM Mono', monospace;
@@ -393,17 +388,16 @@
   letter-spacing: 2px;
   font-weight: 700;
   cursor: pointer;
-  backdrop-filter: blur(12px);
-  transition: all 0.25s ease;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(10px);
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
 }
 
 .intro-skip-btn:hover {
-  background: rgba(16, 185, 129, 0.15);
-  border-color: rgba(16, 185, 129, 0.4);
+  background: rgba(16, 185, 129, 0.18);
+  border-color: rgba(16, 185, 129, 0.45);
   color: #34D399;
   transform: translateY(-1px);
-  box-shadow: 0 6px 25px rgba(16, 185, 129, 0.25);
 }
 
 .skip-kbd {
@@ -418,7 +412,7 @@
 /* ── RESPONSIVE MOBILE ADAPTATIONS ───────────────────────── */
 @media (max-width: 768px) {
   .intro-typography-hero {
-    padding: 20px 16px;
+    padding: 18px 12px;
   }
   .intro-name-headline {
     font-size: 1.85rem;
@@ -437,8 +431,8 @@
     justify-content: center;
   }
   .intro-skip-btn {
-    top: 20px;
-    right: 20px;
+    top: 18px;
+    right: 18px;
     padding: 6px 12px;
   }
 }

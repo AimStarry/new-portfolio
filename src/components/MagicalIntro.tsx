@@ -13,15 +13,26 @@ export default function MagicalIntro({ onComplete, forcePlay = false }: MagicalI
   const [isFadingOut, setIsFadingOut] = useState(false)
   const [isTypographyLit, setIsTypographyLit] = useState(false)
   const [hasTapped, setHasTapped] = useState(false)
-  const [tapRipplePos, setTapRipplePos] = useState<{ x: number; y: number } | null>(null)
-  const [fairyPos, setFairyPos] = useState({ x: -100, y: -100, angle: 0, visible: false })
-  const [lightPos, setLightPos] = useState({ x: -200, y: -200 })
+  const [tapPos, setTapPos] = useState<{ x: number; y: number } | null>(null)
 
-  const location = useLocation()
+  const fairyActorRef = useRef<HTMLDivElement | null>(null)
+  const lightActorRef = useRef<HTMLDivElement | null>(null)
   const animFrameRef = useRef<number | null>(null)
   const startTimeRef = useRef<number | null>(null)
   const isCompleteRef = useRef(false)
   const tapTriggeredRef = useRef(false)
+  const location = useLocation()
+
+  // Prevent background scrolling while intro is visible
+  useEffect(() => {
+    if (shouldRender && !isFadingOut) {
+      const prevOverflow = document.body.style.overflow
+      document.body.style.overflow = 'hidden'
+      return () => {
+        document.body.style.overflow = prevOverflow
+      }
+    }
+  }, [shouldRender, isFadingOut])
 
   const startIntro = useCallback(() => {
     isCompleteRef.current = false
@@ -30,13 +41,11 @@ export default function MagicalIntro({ onComplete, forcePlay = false }: MagicalI
     setIsFadingOut(false)
     setIsTypographyLit(false)
     setHasTapped(false)
-    setTapRipplePos(null)
-    setFairyPos({ x: -100, y: -100, angle: 0, visible: false })
-    setLightPos({ x: -200, y: -200 })
+    setTapPos(null)
     setShouldRender(true)
   }, [])
 
-  // 1. Session check: only play on initial session visit, or query param / programmatic replay
+  // Session check: only on initial session visit or query param / programmatic replay
   useEffect(() => {
     const hasSeen = sessionStorage.getItem('hasSeenMagicalIntro_v3')
     const urlParams = new URLSearchParams(location.search)
@@ -53,48 +62,56 @@ export default function MagicalIntro({ onComplete, forcePlay = false }: MagicalI
     }
   }, [forcePlay, location.search, onComplete, startIntro])
 
-  // Handle Finish / Skip with smooth fade
-  const finishIntro = useCallback(() => {
-    if (isCompleteRef.current) return
-    isCompleteRef.current = true
-    setIsFadingOut(true)
-    sessionStorage.setItem('hasSeenMagicalIntro_v3', 'true')
+  // Fast, responsive finish / skip handler
+  const finishIntro = useCallback(
+    (instant = false) => {
+      if (isCompleteRef.current) return
+      isCompleteRef.current = true
+      sessionStorage.setItem('hasSeenMagicalIntro_v3', 'true')
+      document.body.style.overflow = ''
 
-    setTimeout(() => {
-      setShouldRender(false)
-      if (onComplete) onComplete()
-    }, 700)
-  }, [onComplete])
+      if (instant) {
+        setShouldRender(false)
+        if (onComplete) onComplete()
+        return
+      }
 
-  // Listen for Escape key
+      setIsFadingOut(true)
+      setTimeout(() => {
+        setShouldRender(false)
+        if (onComplete) onComplete()
+      }, 450)
+    },
+    [onComplete]
+  )
+
+  // Escape key handler
   useEffect(() => {
     if (!shouldRender) return
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape' || e.key === ' ') {
-        finishIntro()
+        finishIntro(true)
       }
     }
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [shouldRender, finishIntro])
 
-  // 2. Flight Path Mathematical Curve with Tap Choreography
+  // Precise flight coordinates calculation
   const getFairyCoordinates = (t: number, width: number, height: number) => {
     const textCenterX = width * 0.5
     const textCenterY = height * 0.48
-    // Tap target: Near top-left of the typography ("AIMEE")
-    const tapTargetX = textCenterX - Math.min(width * 0.22, 140)
-    const tapTargetY = textCenterY - 18
+    const tapTargetX = textCenterX - Math.min(width * 0.22, 135)
+    const tapTargetY = textCenterY - 16
 
-    // Phase 1: Swoop in from top-left (t: 0 -> 0.46)
-    if (t < 0.46) {
-      const p = t / 0.46
-      const startX = -80
-      const startY = height * 0.18
-      const midX = width * 0.28
-      const midY = height * 0.55
+    // Phase 1: Swoop in from top-left (t: 0 -> 0.44)
+    if (t < 0.44) {
+      const p = t / 0.44
+      const startX = -70
+      const startY = height * 0.16
+      const midX = width * 0.26
+      const midY = height * 0.52
 
-      // Cubic Bézier curve swooping down and sweeping up toward tap target
       const oneMinusP = 1 - p
       const x =
         oneMinusP * oneMinusP * startX +
@@ -108,44 +125,42 @@ export default function MagicalIntro({ onComplete, forcePlay = false }: MagicalI
       return { x, y }
     }
 
-    // Phase 2: Gentle hover and Tap contact at target (t: 0.46 -> 0.56)
-    if (t < 0.56) {
-      const p = (t - 0.46) / 0.10
-      // Micro tap dip forward
-      const tapDip = Math.sin(p * Math.PI) * 4
+    // Phase 2: Tap contact at target (t: 0.44 -> 0.54)
+    if (t < 0.54) {
+      const p = (t - 0.44) / 0.10
+      const tapDip = Math.sin(p * Math.PI) * 3
       return {
-        x: tapTargetX + p * 6,
+        x: tapTargetX + p * 5,
         y: tapTargetY + tapDip,
       }
     }
 
-    // Phase 3: Graceful arch looping over the illuminated typography (t: 0.56 -> 0.78)
+    // Phase 3: Graceful arch looping over the illuminated typography (t: 0.54 -> 0.78)
     if (t < 0.78) {
-      const p = (t - 0.56) / 0.22
-      const startX = tapTargetX + 6
+      const p = (t - 0.54) / 0.24
+      const startX = tapTargetX + 5
       const startY = tapTargetY
-      const endX = textCenterX + Math.min(width * 0.24, 160)
-      const endY = textCenterY - 26
+      const endX = textCenterX + Math.min(width * 0.24, 155)
+      const endY = textCenterY - 24
 
       const x = startX + (endX - startX) * p
-      // Graceful high arch over the glowing text
-      const y = startY + (endY - startY) * p - Math.sin(p * Math.PI) * (height * 0.14)
+      const y = startY + (endY - startY) * p - Math.sin(p * Math.PI) * (height * 0.12)
       return { x, y }
     }
 
     // Phase 4: Ascending exit flourish toward top-right (t: 0.78 -> 1.0)
     const p = (t - 0.78) / 0.22
-    const startX = textCenterX + Math.min(width * 0.24, 160)
-    const startY = textCenterY - 26
-    const endX = width * 0.92
-    const endY = -90
+    const startX = textCenterX + Math.min(width * 0.24, 155)
+    const startY = textCenterY - 24
+    const endX = width * 0.94
+    const endY = -80
 
     const x = startX + (endX - startX) * p
-    const y = startY + (endY - startY) * p - Math.sin(p * Math.PI * 0.5) * 35
+    const y = startY + (endY - startY) * p - Math.sin(p * Math.PI * 0.5) * 30
     return { x, y }
   }
 
-  // 3. Animation Loop
+  // Optimized Direct DOM Animation Loop (No React setState on frame update!)
   useEffect(() => {
     if (!shouldRender) return
 
@@ -154,11 +169,12 @@ export default function MagicalIntro({ onComplete, forcePlay = false }: MagicalI
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (prefersReducedMotion && !wantsReplay) {
       setIsTypographyLit(true)
-      const timer = setTimeout(() => finishIntro(), 1400)
+      const timer = setTimeout(() => finishIntro(false), 800)
       return () => clearTimeout(timer)
     }
 
-    const duration = 3800 // 3.8s total sequence
+    // Snappy, cinematic 2.4s flight duration
+    const duration = 2400
     startTimeRef.current = performance.now()
     let prevFairyX = -100
     let prevFairyY = -100
@@ -173,46 +189,47 @@ export default function MagicalIntro({ onComplete, forcePlay = false }: MagicalI
       const width = window.innerWidth
       const height = window.innerHeight
 
-      // Calculate Fairy Coordinates
       const currentPos = getFairyCoordinates(progress, width, height)
 
-      // Flight rotation angle
+      // Velocity angle calculation
       const dx = currentPos.x - prevFairyX
       const dy = currentPos.y - prevFairyY
       let flightAngle = Math.atan2(dy, dx) * (180 / Math.PI)
       if (dx === 0 && dy === 0) flightAngle = 0
 
-      // The light in the background smoothly trails behind the fairy
-      const targetLightX = currentPos.x - dx * 0.4
-      const targetLightY = currentPos.y - dy * 0.4
-      lightCurrentX += (targetLightX - lightCurrentX) * 0.16
-      lightCurrentY += (targetLightY - lightCurrentY) * 0.16
+      // Direct DOM transform updates (Zero React re-render overhead!)
+      if (fairyActorRef.current) {
+        if (progress >= 0.97) {
+          fairyActorRef.current.style.opacity = '0'
+        } else {
+          fairyActorRef.current.style.opacity = '1'
+          fairyActorRef.current.style.transform = `translate3d(${currentPos.x - 27}px, ${currentPos.y - 27}px, 0) rotate(${flightAngle + 10}deg)`
+        }
+      }
 
-      setLightPos({ x: lightCurrentX, y: lightCurrentY })
+      // Background light trails smoothly
+      const targetLightX = currentPos.x - dx * 0.35
+      const targetLightY = currentPos.y - dy * 0.35
+      lightCurrentX += (targetLightX - lightCurrentX) * 0.22
+      lightCurrentY += (targetLightY - lightCurrentY) * 0.22
 
-      const isVisible = progress < 0.96
-      setFairyPos({
-        x: currentPos.x,
-        y: currentPos.y,
-        angle: flightAngle,
-        visible: isVisible,
-      })
+      if (lightActorRef.current) {
+        lightActorRef.current.style.transform = `translate3d(${lightCurrentX}px, ${lightCurrentY}px, 0)`
+      }
 
-      // Trigger the TAP at progress ~0.50
-      if (progress >= 0.50 && !tapTriggeredRef.current) {
+      // Trigger the tap event at progress ~0.48
+      if (progress >= 0.48 && !tapTriggeredRef.current) {
         tapTriggeredRef.current = true
+        setTapPos({ x: currentPos.x + 16, y: currentPos.y - 4 })
         setHasTapped(true)
-        setTapRipplePos({ x: currentPos.x + 18, y: currentPos.y - 4 })
-        // Typography lights up!
         setIsTypographyLit(true)
       }
 
       prevFairyX = currentPos.x
       prevFairyY = currentPos.y
 
-      // Complete sequence
       if (progress >= 1 && !isCompleteRef.current) {
-        setTimeout(() => finishIntro(), 600)
+        setTimeout(() => finishIntro(false), 350)
         return
       }
 
@@ -231,35 +248,30 @@ export default function MagicalIntro({ onComplete, forcePlay = false }: MagicalI
   return (
     <div
       className={`magical-intro-overlay ${isFadingOut ? 'fade-out' : ''}`}
-      onClick={finishIntro}
+      onClick={() => finishIntro(false)}
       role="dialog"
       aria-modal="true"
-      aria-label="Portfolio Intro"
+      aria-label="Portfolio Loading Intro"
     >
       {/* ── AMBIENT BASE CANVAS ────────────────────────────── */}
       <div className="intro-ambient-canvas">
         <div className="ambient-center-glow" />
       </div>
 
-      {/* ── THE LIGHT IN THE BACKGROUND FOLLOWING THE FAIRY ── */}
-      <div
-        className="intro-following-light"
-        style={{
-          transform: `translate3d(${lightPos.x}px, ${lightPos.y}px, 0)`,
-        }}
-      >
+      {/* ── BACKGROUND MOVING LIGHT (Hardware-accelerated) ──── */}
+      <div ref={lightActorRef} className="intro-following-light">
         <div className="light-core-glow" />
         <div className="light-emerald-halo" />
         <div className="light-amber-halo" />
       </div>
 
-      {/* ── TAP RIPPLE SHOCKWAVE EFFECT ─────────────────────── */}
-      {hasTapped && tapRipplePos && (
+      {/* ── TAP RIPPLE EFFECT ───────────────────────────────── */}
+      {hasTapped && tapPos && (
         <div
           className="intro-tap-ripple-container"
           style={{
-            left: tapRipplePos.x,
-            top: tapRipplePos.y,
+            left: tapPos.x,
+            top: tapPos.y,
           }}
         >
           <div className="tap-ripple-wave wave-1" />
@@ -268,23 +280,19 @@ export default function MagicalIntro({ onComplete, forcePlay = false }: MagicalI
         </div>
       )}
 
-      {/* ── CENTER STAGE: AIMEE PANGAN TYPOGRAPHY ──────────── */}
+      {/* ── CENTER STAGE: TYPOGRAPHY HERO ─────────────────── */}
       <div className="intro-stage-center">
         <div className={`intro-typography-hero ${isTypographyLit ? 'lit-up' : ''}`}>
-          {/* Subtle Backlight Bloom behind the letters when lit */}
           <div className="typography-ambient-backlight" />
 
-          {/* Main Name Typography */}
           <h1 className="intro-name-headline">
             <span className="word-aimee">AIMEE</span>
             <span className="name-gap">&nbsp;</span>
             <span className="word-pangan">PANGAN</span>
           </h1>
 
-          {/* Luminous Shimmer Wave that sweeps across the lit typography */}
           <div className="typography-shimmer-sweep" />
 
-          {/* Editorial Portfolio Metadata Subtitle */}
           <div className="intro-subtitle-row">
             <span className="badge-pill">PORTFOLIO</span>
             <span className="badge-sep">•</span>
@@ -293,22 +301,15 @@ export default function MagicalIntro({ onComplete, forcePlay = false }: MagicalI
         </div>
       </div>
 
-      {/* ── FAIRY: PURE BLACK SILHOUETTE IN FLIGHT ─────────── */}
-      {fairyPos.visible && (
-        <div
-          className="intro-fairy-actor"
-          style={{
-            transform: `translate3d(${fairyPos.x - 27}px, ${fairyPos.y - 27}px, 0) rotate(${fairyPos.angle + 10}deg)`,
-          }}
-        >
-          <FairySilhouette
-            width={54}
-            height={54}
-            color="#000000"
-            isFluttering={true}
-          />
-        </div>
-      )}
+      {/* ── FAIRY SILHOUETTE ACTOR (Direct DOM transform) ──── */}
+      <div ref={fairyActorRef} className="intro-fairy-actor">
+        <FairySilhouette
+          width={54}
+          height={54}
+          color="#000000"
+          isFluttering={true}
+        />
+      </div>
 
       {/* ── SKIP BUTTON ────────────────────────────────────── */}
       <button
@@ -316,9 +317,9 @@ export default function MagicalIntro({ onComplete, forcePlay = false }: MagicalI
         className="intro-skip-btn"
         onClick={(e) => {
           e.stopPropagation()
-          finishIntro()
+          finishIntro(true)
         }}
-        aria-label="Skip intro animation"
+        aria-label="Skip loading intro"
       >
         <span>SKIP</span>
         <span className="skip-kbd">ESC</span>
