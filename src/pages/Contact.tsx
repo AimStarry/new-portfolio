@@ -385,7 +385,7 @@ export default function Contact() {
                   <textarea
                     id="message"
                     name="message"
-                    rows={5}
+                    rows={4}
                     required
                     placeholder="Tell me a little about it..."
                     value={formData.message}
