@@ -8,63 +8,37 @@ interface MagicalIntroProps {
   forcePlay?: boolean
 }
 
-interface Particle {
-  x: number
-  y: number
-  vx: number
-  vy: number
-  size: number
-  alpha: number
-  decay: number
-  color: string
-  isSparkle: boolean
-  rotation: number
-  rotationSpeed: number
-  twinkleSpeed: number
-  twinklePhase: number
-}
-
-// Enchanting Disney-Fairies color palette: Gold, Warm Amber, Emerald, Mint & Pure Starfire
-const PIXIE_COLORS = [
-  '#FDE047', // Pale Gold
-  '#FBBF24', // Rich Amber
-  '#F59E0B', // Deep Amber
-  '#34D399', // Bright Emerald
-  '#10B981', // Deep Emerald
-  '#A7F3D0', // Mint Whisper
-  '#FFFFFF', // Pure Starburst
-]
-
 export default function MagicalIntro({ onComplete, forcePlay = false }: MagicalIntroProps) {
   const [shouldRender, setShouldRender] = useState(false)
   const [isFadingOut, setIsFadingOut] = useState(false)
-  const [logoRevealed, setLogoRevealed] = useState(false)
-  const [nameRevealed, setNameRevealed] = useState(false)
+  const [isTypographyLit, setIsTypographyLit] = useState(false)
+  const [hasTapped, setHasTapped] = useState(false)
+  const [tapRipplePos, setTapRipplePos] = useState<{ x: number; y: number } | null>(null)
   const [fairyPos, setFairyPos] = useState({ x: -100, y: -100, angle: 0, visible: false })
+  const [lightPos, setLightPos] = useState({ x: -200, y: -200 })
 
   const location = useLocation()
-  const canvasRef = useRef<HTMLCanvasElement | null>(null)
   const animFrameRef = useRef<number | null>(null)
   const startTimeRef = useRef<number | null>(null)
-  const particlesRef = useRef<Particle[]>([])
   const isCompleteRef = useRef(false)
-  const hasEmittedBurstRef = useRef(false)
+  const tapTriggeredRef = useRef(false)
 
   const startIntro = useCallback(() => {
     isCompleteRef.current = false
-    hasEmittedBurstRef.current = false
+    tapTriggeredRef.current = false
     startTimeRef.current = null
-    particlesRef.current = []
     setIsFadingOut(false)
-    setLogoRevealed(false)
-    setNameRevealed(false)
+    setIsTypographyLit(false)
+    setHasTapped(false)
+    setTapRipplePos(null)
     setFairyPos({ x: -100, y: -100, angle: 0, visible: false })
+    setLightPos({ x: -200, y: -200 })
     setShouldRender(true)
   }, [])
 
-  // 1. Session check: only play on initial visit or forcePlay or query param replay
+  // 1. Session check: only play on initial session visit, or query param / programmatic replay
   useEffect(() => {
-    const hasSeen = sessionStorage.getItem('hasSeenMagicalIntro_v2')
+    const hasSeen = sessionStorage.getItem('hasSeenMagicalIntro_v3')
     const urlParams = new URLSearchParams(location.search)
     const wantsReplay = urlParams.get('intro') === 'replay' || urlParams.get('replay') === 'true'
 
@@ -74,7 +48,6 @@ export default function MagicalIntro({ onComplete, forcePlay = false }: MagicalI
       if (onComplete) onComplete()
     }
 
-    // Expose programmatic replay helper on window
     ;(window as unknown as { replayMagicalIntro: () => void }).replayMagicalIntro = () => {
       startIntro()
     }
@@ -85,7 +58,7 @@ export default function MagicalIntro({ onComplete, forcePlay = false }: MagicalI
     if (isCompleteRef.current) return
     isCompleteRef.current = true
     setIsFadingOut(true)
-    sessionStorage.setItem('hasSeenMagicalIntro_v2', 'true')
+    sessionStorage.setItem('hasSeenMagicalIntro_v3', 'true')
 
     setTimeout(() => {
       setShouldRender(false)
@@ -105,159 +78,92 @@ export default function MagicalIntro({ onComplete, forcePlay = false }: MagicalI
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [shouldRender, finishIntro])
 
-  // Helper: draw 4-pointed star sparkle on canvas
-  const drawSparkle = (
-    ctx: CanvasRenderingContext2D,
-    x: number,
-    y: number,
-    size: number,
-    rotation: number,
-    alpha: number,
-    color: string
-  ) => {
-    ctx.save()
-    ctx.translate(x, y)
-    ctx.rotate(rotation)
-    ctx.fillStyle = color
-    ctx.globalAlpha = Math.max(0, Math.min(1, alpha))
-
-    ctx.beginPath()
-    // 4-pointed star sparkle geometry
-    const outer = size * 1.8
-    const inner = size * 0.25
-    for (let i = 0; i < 4; i++) {
-      const angle = (i * Math.PI) / 2
-      ctx.lineTo(Math.cos(angle) * outer, Math.sin(angle) * outer)
-      const nextAngle = angle + Math.PI / 4
-      ctx.lineTo(Math.cos(nextAngle) * inner, Math.sin(nextAngle) * inner)
-    }
-    ctx.closePath()
-    ctx.fill()
-
-    // Central glow core
-    ctx.beginPath()
-    ctx.arc(0, 0, size * 0.5, 0, Math.PI * 2)
-    ctx.fillStyle = '#FFFFFF'
-    ctx.fill()
-
-    ctx.restore()
-  }
-
-  // Helper: emit burst of particles from logo perimeter
-  const emitBurst = (centerX: number, centerY: number, count = 75) => {
-    for (let i = 0; i < count; i++) {
-      const angle = Math.random() * Math.PI * 2
-      const speed = Math.random() * 4.5 + 1.2
-      const size = Math.random() * 3.2 + 1.2
-      const isSparkle = Math.random() < 0.35
-
-      particlesRef.current.push({
-        x: centerX + Math.cos(angle) * (Math.random() * 20),
-        y: centerY + Math.sin(angle) * (Math.random() * 20),
-        vx: Math.cos(angle) * speed,
-        vy: Math.sin(angle) * speed,
-        size,
-        alpha: 1,
-        decay: Math.random() * 0.016 + 0.008,
-        color: PIXIE_COLORS[Math.floor(Math.random() * PIXIE_COLORS.length)],
-        isSparkle,
-        rotation: Math.random() * Math.PI,
-        rotationSpeed: (Math.random() - 0.5) * 0.08,
-        twinkleSpeed: Math.random() * 0.15 + 0.05,
-        twinklePhase: Math.random() * Math.PI * 2,
-      })
-    }
-  }
-
-  // 2. Flight Path Mathematical Curve Calculation
+  // 2. Flight Path Mathematical Curve with Tap Choreography
   const getFairyCoordinates = (t: number, width: number, height: number) => {
-    const centerX = width * 0.5
-    const centerY = height * 0.44
+    const textCenterX = width * 0.5
+    const textCenterY = height * 0.48
+    // Tap target: Near top-left of the typography ("AIMEE")
+    const tapTargetX = textCenterX - Math.min(width * 0.22, 140)
+    const tapTargetY = textCenterY - 18
 
-    // Phase 1: Entrance swoop from top-left across the screen (t: 0 -> 0.35)
-    if (t < 0.35) {
-      const p = t / 0.35
-      // Smooth cubic swoop
-      const x = -60 + p * (width * 0.45 + 60)
-      const y = height * 0.15 + Math.sin(p * Math.PI * 0.8) * (height * 0.42)
+    // Phase 1: Swoop in from top-left (t: 0 -> 0.46)
+    if (t < 0.46) {
+      const p = t / 0.46
+      const startX = -80
+      const startY = height * 0.18
+      const midX = width * 0.28
+      const midY = height * 0.55
+
+      // Cubic Bézier curve swooping down and sweeping up toward tap target
+      const oneMinusP = 1 - p
+      const x =
+        oneMinusP * oneMinusP * startX +
+        2 * oneMinusP * p * midX +
+        p * p * tapTargetX
+      const y =
+        oneMinusP * oneMinusP * startY +
+        2 * oneMinusP * p * midY +
+        p * p * tapTargetY
+
       return { x, y }
     }
 
-    // Phase 2: Graceful sweeping arch towards upper right (t: 0.35 -> 0.55)
-    if (t < 0.55) {
-      const p = (t - 0.35) / 0.20
-      const startX = width * 0.45
-      const startY = height * 0.15 + Math.sin(Math.PI * 0.8) * (height * 0.42)
-      const endX = width * 0.68
-      const endY = height * 0.24
+    // Phase 2: Gentle hover and Tap contact at target (t: 0.46 -> 0.56)
+    if (t < 0.56) {
+      const p = (t - 0.46) / 0.10
+      // Micro tap dip forward
+      const tapDip = Math.sin(p * Math.PI) * 4
+      return {
+        x: tapTargetX + p * 6,
+        y: tapTargetY + tapDip,
+      }
+    }
 
-      // Gentle curve up
+    // Phase 3: Graceful arch looping over the illuminated typography (t: 0.56 -> 0.78)
+    if (t < 0.78) {
+      const p = (t - 0.56) / 0.22
+      const startX = tapTargetX + 6
+      const startY = tapTargetY
+      const endX = textCenterX + Math.min(width * 0.24, 160)
+      const endY = textCenterY - 26
+
       const x = startX + (endX - startX) * p
-      const y = startY + (endY - startY) * p - Math.sin(p * Math.PI) * (height * 0.12)
+      // Graceful high arch over the glowing text
+      const y = startY + (endY - startY) * p - Math.sin(p * Math.PI) * (height * 0.14)
       return { x, y }
     }
 
-    // Phase 3: Halo loop circling around the center AIM logo (t: 0.55 -> 0.85)
-    if (t < 0.85) {
-      const p = (t - 0.55) / 0.30
-      const radiusX = Math.min(width * 0.18, 140)
-      const radiusY = Math.min(height * 0.18, 120)
-
-      // Start from top-right and sweep full 360-degree halo
-      const angle = -Math.PI * 0.3 + p * Math.PI * 2.15
-      const x = centerX + Math.cos(angle) * radiusX
-      const y = centerY + Math.sin(angle) * radiusY
-      return { x, y }
-    }
-
-    // Phase 4: Ascending graceful flourish towards top-right (t: 0.85 -> 1.0)
-    const p = (t - 0.85) / 0.15
-    const startX = centerX + Math.cos(-Math.PI * 0.3 + Math.PI * 2.15) * Math.min(width * 0.18, 140)
-    const startY = centerY + Math.sin(-Math.PI * 0.3 + Math.PI * 2.15) * Math.min(height * 0.18, 120)
-    const endX = width * 0.88
-    const endY = -80
+    // Phase 4: Ascending exit flourish toward top-right (t: 0.78 -> 1.0)
+    const p = (t - 0.78) / 0.22
+    const startX = textCenterX + Math.min(width * 0.24, 160)
+    const startY = textCenterY - 26
+    const endX = width * 0.92
+    const endY = -90
 
     const x = startX + (endX - startX) * p
-    const y = startY + (endY - startY) * p - Math.sin(p * Math.PI * 0.5) * 40
+    const y = startY + (endY - startY) * p - Math.sin(p * Math.PI * 0.5) * 35
     return { x, y }
   }
 
-  // 3. Main Animation Loop: Fairy flight + 60FPS Pixie Dust Canvas
+  // 3. Animation Loop
   useEffect(() => {
     if (!shouldRender) return
 
-    const canvas = canvasRef.current
-    if (!canvas) return
-    const ctx = canvas.getContext('2d')
-    if (!ctx) return
-
-    // Set high-DPI canvas dimensions
-    const resizeCanvas = () => {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2)
-      canvas.width = window.innerWidth * dpr
-      canvas.height = window.innerHeight * dpr
-      canvas.style.width = `${window.innerWidth}px`
-      canvas.style.height = `${window.innerHeight}px`
-      ctx.scale(dpr, dpr)
-    }
-    resizeCanvas()
-    window.addEventListener('resize', resizeCanvas)
-
-    // Check prefers-reduced-motion (only if user didn't explicitly request replay)
     const urlParams = new URLSearchParams(location.search)
     const wantsReplay = urlParams.get('intro') === 'replay' || urlParams.get('replay') === 'true'
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (prefersReducedMotion && !wantsReplay) {
-      setLogoRevealed(true)
-      setNameRevealed(true)
-      const timer = setTimeout(() => finishIntro(), 1500)
+      setIsTypographyLit(true)
+      const timer = setTimeout(() => finishIntro(), 1400)
       return () => clearTimeout(timer)
     }
 
-    const duration = 4000 // 4 seconds total flight sequence
+    const duration = 3800 // 3.8s total sequence
     startTimeRef.current = performance.now()
     let prevFairyX = -100
     let prevFairyY = -100
+    let lightCurrentX = -200
+    let lightCurrentY = -200
 
     const loop = (now: number) => {
       if (!startTimeRef.current) startTimeRef.current = now
@@ -267,19 +173,23 @@ export default function MagicalIntro({ onComplete, forcePlay = false }: MagicalI
       const width = window.innerWidth
       const height = window.innerHeight
 
-      // Clear Canvas
-      ctx.clearRect(0, 0, width, height)
-
       // Calculate Fairy Coordinates
       const currentPos = getFairyCoordinates(progress, width, height)
 
-      // Calculate flight rotation angle based on motion delta
+      // Flight rotation angle
       const dx = currentPos.x - prevFairyX
       const dy = currentPos.y - prevFairyY
       let flightAngle = Math.atan2(dy, dx) * (180 / Math.PI)
       if (dx === 0 && dy === 0) flightAngle = 0
 
-      // Smooth fairy state
+      // The light in the background smoothly trails behind the fairy
+      const targetLightX = currentPos.x - dx * 0.4
+      const targetLightY = currentPos.y - dy * 0.4
+      lightCurrentX += (targetLightX - lightCurrentX) * 0.16
+      lightCurrentY += (targetLightY - lightCurrentY) * 0.16
+
+      setLightPos({ x: lightCurrentX, y: lightCurrentY })
+
       const isVisible = progress < 0.96
       setFairyPos({
         x: currentPos.x,
@@ -288,90 +198,19 @@ export default function MagicalIntro({ onComplete, forcePlay = false }: MagicalI
         visible: isVisible,
       })
 
-      // Emit Pixie Dust Particles along fairy path
-      if (isVisible) {
-        // Emit 4 to 8 particles per frame from wand tip / wings
-        const emitCount = progress > 0.55 && progress < 0.85 ? 7 : 4
-        for (let i = 0; i < emitCount; i++) {
-          const spread = (Math.random() - 0.5) * 14
-          const isSparkle = Math.random() < 0.28
-          const size = Math.random() * 2.8 + 1.0
-
-          particlesRef.current.push({
-            x: currentPos.x + spread,
-            y: currentPos.y + spread,
-            vx: (Math.random() - 0.5) * 1.4 - dx * 0.12,
-            vy: (Math.random() - 0.5) * 1.4 + 0.35, // Soft downward gravity
-            size,
-            alpha: Math.random() * 0.4 + 0.6,
-            decay: Math.random() * 0.016 + 0.010,
-            color: PIXIE_COLORS[Math.floor(Math.random() * PIXIE_COLORS.length)],
-            isSparkle,
-            rotation: Math.random() * Math.PI,
-            rotationSpeed: (Math.random() - 0.5) * 0.06,
-            twinkleSpeed: Math.random() * 0.12 + 0.06,
-            twinklePhase: Math.random() * Math.PI * 2,
-          })
-        }
-      }
-
-      // Check Stage Triggers:
-      // When fairy finishes circling the logo (progress ~0.80):
-      if (progress >= 0.78 && !hasEmittedBurstRef.current) {
-        hasEmittedBurstRef.current = true
-        setLogoRevealed(true)
-        emitBurst(width * 0.5, height * 0.44, 90)
-
-        // Reveal Name slightly after logo illumination
-        setTimeout(() => {
-          setNameRevealed(true)
-        }, 400)
-      }
-
-      // Render & Update Pixie Dust Particles
-      for (let i = particlesRef.current.length - 1; i >= 0; i--) {
-        const p = particlesRef.current[i]
-
-        // Physics update
-        p.x += p.vx
-        p.y += p.vy
-        p.vx *= 0.985
-        p.vy *= 0.985
-        p.vy += 0.015 // Micro-gravity
-        p.alpha -= p.decay
-        p.rotation += p.rotationSpeed
-        p.twinklePhase += p.twinkleSpeed
-
-        // Remove dead particles
-        if (p.alpha <= 0) {
-          particlesRef.current.splice(i, 1)
-          continue
-        }
-
-        // Twinkle factor
-        const twinkle = Math.sin(p.twinklePhase) * 0.25 + 0.75
-        const renderAlpha = Math.max(0, p.alpha * twinkle)
-
-        if (p.isSparkle) {
-          drawSparkle(ctx, p.x, p.y, p.size * 1.5, p.rotation, renderAlpha, p.color)
-        } else {
-          // Soft circular glow point
-          ctx.save()
-          ctx.beginPath()
-          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2)
-          ctx.fillStyle = p.color
-          ctx.globalAlpha = renderAlpha
-          ctx.shadowBlur = 8
-          ctx.shadowColor = p.color
-          ctx.fill()
-          ctx.restore()
-        }
+      // Trigger the TAP at progress ~0.50
+      if (progress >= 0.50 && !tapTriggeredRef.current) {
+        tapTriggeredRef.current = true
+        setHasTapped(true)
+        setTapRipplePos({ x: currentPos.x + 18, y: currentPos.y - 4 })
+        // Typography lights up!
+        setIsTypographyLit(true)
       }
 
       prevFairyX = currentPos.x
       prevFairyY = currentPos.y
 
-      // Auto-finish when sequence completes
+      // Complete sequence
       if (progress >= 1 && !isCompleteRef.current) {
         setTimeout(() => finishIntro(), 600)
         return
@@ -384,7 +223,6 @@ export default function MagicalIntro({ onComplete, forcePlay = false }: MagicalI
 
     return () => {
       if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current)
-      window.removeEventListener('resize', resizeCanvas)
     }
   }, [shouldRender, finishIntro, location.search])
 
@@ -396,66 +234,83 @@ export default function MagicalIntro({ onComplete, forcePlay = false }: MagicalI
       onClick={finishIntro}
       role="dialog"
       aria-modal="true"
-      aria-label="Magical Portfolio Intro"
+      aria-label="Portfolio Intro"
     >
-      {/* Background Ambience: Deep Obsidian Canvas with Emerald Aura Glow */}
+      {/* ── AMBIENT BASE CANVAS ────────────────────────────── */}
       <div className="intro-ambient-canvas">
-        <div className="ambient-radial-glow glow-emerald" />
-        <div className="ambient-radial-glow glow-gold" />
+        <div className="ambient-center-glow" />
       </div>
 
-      {/* Pixie Dust Particle Canvas */}
-      <canvas ref={canvasRef} className="pixie-dust-canvas" />
+      {/* ── THE LIGHT IN THE BACKGROUND FOLLOWING THE FAIRY ── */}
+      <div
+        className="intro-following-light"
+        style={{
+          transform: `translate3d(${lightPos.x}px, ${lightPos.y}px, 0)`,
+        }}
+      >
+        <div className="light-core-glow" />
+        <div className="light-emerald-halo" />
+        <div className="light-amber-halo" />
+      </div>
 
-      {/* Fairy Silhouette Enveloped in Surrounding Light */}
+      {/* ── TAP RIPPLE SHOCKWAVE EFFECT ─────────────────────── */}
+      {hasTapped && tapRipplePos && (
+        <div
+          className="intro-tap-ripple-container"
+          style={{
+            left: tapRipplePos.x,
+            top: tapRipplePos.y,
+          }}
+        >
+          <div className="tap-ripple-wave wave-1" />
+          <div className="tap-ripple-wave wave-2" />
+          <div className="tap-contact-flash" />
+        </div>
+      )}
+
+      {/* ── CENTER STAGE: AIMEE PANGAN TYPOGRAPHY ──────────── */}
+      <div className="intro-stage-center">
+        <div className={`intro-typography-hero ${isTypographyLit ? 'lit-up' : ''}`}>
+          {/* Subtle Backlight Bloom behind the letters when lit */}
+          <div className="typography-ambient-backlight" />
+
+          {/* Main Name Typography */}
+          <h1 className="intro-name-headline">
+            <span className="word-aimee">AIMEE</span>
+            <span className="name-gap">&nbsp;</span>
+            <span className="word-pangan">PANGAN</span>
+          </h1>
+
+          {/* Luminous Shimmer Wave that sweeps across the lit typography */}
+          <div className="typography-shimmer-sweep" />
+
+          {/* Editorial Portfolio Metadata Subtitle */}
+          <div className="intro-subtitle-row">
+            <span className="badge-pill">PORTFOLIO</span>
+            <span className="badge-sep">•</span>
+            <span className="badge-role">WEB DEVELOPER &amp; DATABASE ARCHITECT</span>
+          </div>
+        </div>
+      </div>
+
+      {/* ── FAIRY: PURE BLACK SILHOUETTE IN FLIGHT ─────────── */}
       {fairyPos.visible && (
         <div
           className="intro-fairy-actor"
           style={{
-            transform: `translate3d(${fairyPos.x - 34}px, ${fairyPos.y - 34}px, 0) rotate(${fairyPos.angle + 12}deg)`,
+            transform: `translate3d(${fairyPos.x - 27}px, ${fairyPos.y - 27}px, 0) rotate(${fairyPos.angle + 10}deg)`,
           }}
         >
           <FairySilhouette
-            width={68}
-            height={68}
-            silhouetteColor="#02040a"
-            glowColor="#34D399"
+            width={54}
+            height={54}
+            color="#000000"
             isFluttering={true}
           />
         </div>
       )}
 
-      {/* Center Stage: AIM Logo & Monogram with Shimmer Reveal */}
-      <div className="intro-stage-center">
-        <div className={`intro-logo-wrapper ${logoRevealed ? 'revealed' : ''}`}>
-          {/* Luminous Halo Ring drawn by the fairy */}
-          <div className="magic-halo-ring" />
-
-          {/* Signature hand-drawn AIM Logo */}
-          <div className="logo-glow-shell">
-            <img
-              src="/assets/logo.png"
-              alt="AIM Monogram"
-              className="intro-brand-logo"
-            />
-            <div className="magic-shimmer-sweep" />
-          </div>
-        </div>
-
-        {/* Name & Title Typography Reveal */}
-        <div className={`intro-typography-block ${nameRevealed ? 'revealed' : ''}`}>
-          <h1 className="intro-name-text">
-            AIMEE <span className="name-highlight">PANGAN</span>
-          </h1>
-          <p className="intro-title-sub">
-            <span className="mono-badge">PORTFOLIO</span>
-            <span className="bullet-sep">•</span>
-            <span>DEVELOPER &amp; DATABASE ARCHITECT</span>
-          </p>
-        </div>
-      </div>
-
-      {/* Discreet Skip Option */}
+      {/* ── SKIP BUTTON ────────────────────────────────────── */}
       <button
         type="button"
         className="intro-skip-btn"
@@ -463,7 +318,7 @@ export default function MagicalIntro({ onComplete, forcePlay = false }: MagicalI
           e.stopPropagation()
           finishIntro()
         }}
-        aria-label="Skip magical intro animation"
+        aria-label="Skip intro animation"
       >
         <span>SKIP</span>
         <span className="skip-kbd">ESC</span>

@@ -1,7 +1,7 @@
 /* ═══════════════════════════════════════════════════════════════
-   CINEMATIC DISNEY-FAIRIES MAGICAL PORTFOLIO INTRO
-   Deep Obsidian Canvas, Emerald Ambient Glow, Gold Pixie Dust
-═══════════════════════════════════════════════════════════════ */
+   CINEMATIC PORTFOLIO INTRO
+   Black Fairy Silhouette, Moving Background Light & Tap Typography
+   ═══════════════════════════════════════════════════════════════ */
 
 .magical-intro-overlay {
   position: fixed;
@@ -9,7 +9,7 @@
   width: 100vw;
   height: 100vh;
   z-index: 999999;
-  background: #04060d;
+  background: #03050a;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -24,11 +24,11 @@
 
 .magical-intro-overlay.fade-out {
   opacity: 0;
-  filter: blur(8px);
+  filter: blur(10px);
   pointer-events: none;
 }
 
-/* ── AMBIENT ATMOSPHERE ──────────────────────────────────── */
+/* ── AMBIENT BASE CANVAS ─────────────────────────────────── */
 .intro-ambient-canvas {
   position: absolute;
   inset: 0;
@@ -36,69 +36,159 @@
   z-index: 1;
 }
 
-.ambient-radial-glow {
+.ambient-center-glow {
   position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  height: 400px;
   border-radius: 50%;
-  filter: blur(120px);
-  opacity: 0.28;
-  mix-blend-mode: screen;
+  background: radial-gradient(circle, rgba(16, 185, 129, 0.12) 0%, rgba(6, 78, 59, 0.05) 50%, transparent 75%);
+  filter: blur(90px);
+  pointer-events: none;
+}
+
+/* ── THE LIGHT IN THE BACKGROUND FOLLOWING THE FAIRY ─────── */
+.intro-following-light {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  z-index: 2;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.light-core-glow {
+  position: absolute;
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(254, 240, 138, 0.95) 0%,
+    rgba(245, 158, 11, 0.75) 30%,
+    rgba(16, 185, 129, 0.45) 60%,
+    transparent 80%
+  );
+  filter: blur(35px);
+  transform: translate(-50%, -50%);
+}
+
+.light-emerald-halo {
+  position: absolute;
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(52, 211, 153, 0.5) 0%,
+    rgba(5, 150, 105, 0.25) 50%,
+    transparent 75%
+  );
+  filter: blur(65px);
+  transform: translate(-50%, -50%);
+  animation: haloBreathe 2s ease-in-out infinite alternate;
+}
+
+.light-amber-halo {
+  position: absolute;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(245, 158, 11, 0.45) 0%,
+    transparent 70%
+  );
+  filter: blur(45px);
+  transform: translate(-50%, -50%);
+}
+
+@keyframes haloBreathe {
+  0% {
+    transform: translate(-50%, -50%) scale(0.9);
+    opacity: 0.7;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.15);
+    opacity: 1;
+  }
+}
+
+/* ── TAP RIPPLE SHOCKWAVE EFFECT ─────────────────────────── */
+.intro-tap-ripple-container {
+  position: absolute;
+  width: 0;
+  height: 0;
+  z-index: 3;
   pointer-events: none;
   transform: translate(-50%, -50%);
 }
 
-.glow-emerald {
-  width: 700px;
-  height: 700px;
-  background: radial-gradient(circle, #10B981 0%, #064E3B 65%, transparent 80%);
-  top: 45%;
+.tap-ripple-wave {
+  position: absolute;
+  border-radius: 50%;
+  border: 1.5px solid rgba(52, 211, 153, 0.85);
+  box-shadow: 0 0 25px rgba(52, 211, 153, 0.7),
+              inset 0 0 15px rgba(245, 158, 11, 0.4);
+  top: 50%;
   left: 50%;
-  animation: ambientBreathe 4s ease-in-out infinite alternate;
+  transform: translate(-50%, -50%) scale(0);
+  opacity: 1;
 }
 
-.glow-gold {
-  width: 450px;
-  height: 450px;
-  background: radial-gradient(circle, rgba(245, 158, 11, 0.35) 0%, transparent 70%);
-  top: 48%;
-  left: 52%;
-  animation: ambientBreathe 3.2s ease-in-out infinite alternate-reverse;
+.wave-1 {
+  width: 140px;
+  height: 140px;
+  animation: tapRipple 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-@keyframes ambientBreathe {
+.wave-2 {
+  width: 220px;
+  height: 220px;
+  animation: tapRipple 0.95s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards;
+  border-color: rgba(245, 158, 11, 0.6);
+}
+
+@keyframes tapRipple {
   0% {
-    transform: translate(-50%, -50%) scale(0.9);
-    opacity: 0.2;
+    transform: translate(-50%, -50%) scale(0.1);
+    opacity: 1;
   }
   100% {
-    transform: translate(-50%, -50%) scale(1.15);
-    opacity: 0.35;
+    transform: translate(-50%, -50%) scale(1.6);
+    opacity: 0;
   }
 }
 
-/* ── PIXIE DUST CANVAS ───────────────────────────────────── */
-.pixie-dust-canvas {
+.tap-contact-flash {
   position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 2;
-  pointer-events: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #FFFFFF 0%, #FEF08A 40%, transparent 80%);
+  filter: blur(6px);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: tapFlash 0.5s ease-out forwards;
 }
 
-/* ── FAIRY ACTOR (IN FLIGHT) ─────────────────────────────── */
-.intro-fairy-actor {
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 4;
-  pointer-events: none;
-  will-change: transform;
-  filter: drop-shadow(0 0 16px rgba(52, 211, 153, 0.9))
-          drop-shadow(0 0 32px rgba(245, 158, 11, 0.5));
-  transition: transform 0.05s linear;
+@keyframes tapFlash {
+  0% {
+    transform: translate(-50%, -50%) scale(0.3);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(2.2);
+    opacity: 0;
+  }
 }
 
-/* ── CENTER STAGE: LOGO & MONOGRAM REVEAL ────────────────── */
+/* ── CENTER STAGE: AIMEE PANGAN TYPOGRAPHY ───────────────── */
 .intro-stage-center {
   position: relative;
   z-index: 3;
@@ -106,176 +196,185 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 20px;
   pointer-events: none;
-  transform: translateY(-20px);
 }
 
-.intro-logo-wrapper {
+.intro-typography-hero {
   position: relative;
-  width: 170px;
-  height: 170px;
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 16px;
+  padding: 30px 40px;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Ambient Backlight that blooms when tapped */
+.typography-ambient-backlight {
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.8);
+  width: 500px;
+  height: 220px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(16, 185, 129, 0.45) 0%,
+    rgba(245, 158, 11, 0.25) 45%,
+    transparent 75%
+  );
+  filter: blur(70px);
+  opacity: 0;
+  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+
+.intro-typography-hero.lit-up .typography-ambient-backlight {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1.15);
+}
+
+/* Main Name Headline */
+.intro-name-headline {
+  font-family: 'Lexend', -apple-system, sans-serif;
+  font-size: clamp(2.4rem, 5.2vw, 4.4rem);
+  font-weight: 800;
+  letter-spacing: 0.28em;
+  text-indent: 0.28em; /* Optical balance for wide letter-spacing */
+  margin: 0;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  opacity: 0;
-  transform: scale(0.8);
-  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.intro-logo-wrapper.revealed {
-  opacity: 1;
-  transform: scale(1);
-}
-
-/* Luminous Halo Ring traced by the fairy's circle */
-.magic-halo-ring {
-  position: absolute;
-  inset: -12px;
-  border-radius: 50%;
-  border: 1.5px solid rgba(52, 211, 153, 0.4);
-  box-shadow: 0 0 25px rgba(52, 211, 153, 0.3),
-              inset 0 0 20px rgba(245, 158, 11, 0.2);
-  opacity: 0;
-  transform: scale(0.9);
-  transition: opacity 0.6s ease, transform 0.6s ease;
-}
-
-.intro-logo-wrapper.revealed .magic-halo-ring {
-  opacity: 1;
-  transform: scale(1);
-  animation: haloPulse 3s ease-in-out infinite alternate;
-}
-
-@keyframes haloPulse {
-  0% {
-    box-shadow: 0 0 20px rgba(52, 211, 153, 0.25), inset 0 0 15px rgba(245, 158, 11, 0.15);
-    border-color: rgba(52, 211, 153, 0.3);
-  }
-  100% {
-    box-shadow: 0 0 45px rgba(52, 211, 153, 0.5), inset 0 0 30px rgba(245, 158, 11, 0.3);
-    border-color: rgba(52, 211, 153, 0.6);
-  }
-}
-
-.logo-glow-shell {
+  flex-wrap: nowrap;
   position: relative;
-  width: 130px;
-  height: 130px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  border-radius: 50%;
+  z-index: 2;
+  /* Slumbering state before the tap: subtle dark silhouette */
+  color: rgba(255, 255, 255, 0.10);
+  text-shadow: none;
+  transition: color 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+              text-shadow 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.intro-brand-logo {
-  width: 120px;
-  height: auto;
-  object-fit: contain;
-  filter: drop-shadow(0 0 18px rgba(16, 185, 129, 0.65))
-          drop-shadow(0 0 35px rgba(245, 158, 11, 0.35));
-  position: relative;
-  z-index: 1;
+.word-aimee {
+  transition: color 0.5s ease, text-shadow 0.5s ease;
 }
 
-/* Magical Shimmer Ray sweeping across the Aim logo */
-.magic-shimmer-sweep {
+.word-pangan {
+  transition: color 0.6s ease, text-shadow 0.6s ease;
+}
+
+/* When the fairy taps the typography: IT LIGHTS UP! */
+.intro-typography-hero.lit-up .intro-name-headline {
+  color: #FFFFFF;
+  text-shadow: 0 4px 25px rgba(0, 0, 0, 0.9),
+               0 0 35px rgba(16, 185, 129, 0.6),
+               0 0 65px rgba(16, 185, 129, 0.35);
+}
+
+.intro-typography-hero.lit-up .word-aimee {
+  color: #FFFFFF;
+  text-shadow: 0 0 30px rgba(255, 255, 255, 0.8),
+               0 0 50px rgba(52, 211, 153, 0.6);
+}
+
+.intro-typography-hero.lit-up .word-pangan {
+  background: linear-gradient(135deg, #10B981 0%, #34D399 50%, #F59E0B 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 25px rgba(16, 185, 129, 0.7));
+}
+
+/* Shimmer Wave sweeping across the typography on light-up */
+.typography-shimmer-sweep {
   position: absolute;
-  top: -50%;
-  left: -120%;
-  width: 60%;
-  height: 200%;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
   background: linear-gradient(
     90deg,
     transparent 0%,
     rgba(255, 255, 255, 0.45) 50%,
     transparent 100%
   );
-  transform: rotate(30deg);
+  transform: skewX(-20deg);
   opacity: 0;
   pointer-events: none;
 }
 
-.intro-logo-wrapper.revealed .magic-shimmer-sweep {
+.intro-typography-hero.lit-up .typography-shimmer-sweep {
   opacity: 1;
-  animation: shimmerSweep 1.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
+  animation: textShimmerSweep 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards;
 }
 
-@keyframes shimmerSweep {
+@keyframes textShimmerSweep {
   0% {
-    left: -120%;
+    left: -80%;
   }
   100% {
     left: 180%;
   }
 }
 
-/* ── TYPOGRAPHY REVEAL ───────────────────────────────────── */
-.intro-typography-block {
-  display: flex;
-  flex-direction: column;
+/* Subtitle Row (Slides up and fades in upon lighting up) */
+.intro-subtitle-row {
+  display: inline-flex;
   align-items: center;
-  text-align: center;
-  gap: 8px;
+  gap: 12px;
+  font-family: 'DM Mono', monospace;
+  font-size: clamp(0.72rem, 0.95vw, 0.85rem);
+  letter-spacing: 2px;
+  color: rgba(255, 255, 255, 0.75);
+  margin: 0;
+  position: relative;
+  z-index: 2;
   opacity: 0;
-  transform: translateY(16px);
-  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateY(14px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.25s,
+              transform 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.25s;
 }
 
-.intro-typography-block.revealed {
+.intro-typography-hero.lit-up .intro-subtitle-row {
   opacity: 1;
   transform: translateY(0);
 }
 
-.intro-name-text {
-  font-family: 'Lexend', -apple-system, sans-serif;
-  font-size: clamp(1.8rem, 3.2vw, 2.6rem);
-  font-weight: 800;
-  letter-spacing: 0.35em;
-  color: #FFFFFF;
-  margin: 0;
-  text-indent: 0.35em; /* Optical balance for wide letter-spacing */
-  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.8),
-               0 0 30px rgba(16, 185, 129, 0.35);
-}
-
-.name-highlight {
-  color: #10B981;
-  background: linear-gradient(135deg, #10B981 0%, #34D399 50%, #F59E0B 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.intro-title-sub {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  font-family: 'DM Mono', monospace;
-  font-size: clamp(0.70rem, 0.95vw, 0.82rem);
-  letter-spacing: 2px;
-  color: rgba(255, 255, 255, 0.7);
-  margin: 0;
-}
-
-.mono-badge {
+.badge-pill {
   color: #F59E0B;
-  background: rgba(245, 158, 11, 0.12);
-  border: 1px solid rgba(245, 158, 11, 0.3);
-  padding: 3px 8px;
+  background: rgba(245, 158, 11, 0.14);
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  padding: 3px 9px;
   border-radius: 4px;
   font-weight: 700;
   font-size: 0.68rem;
 }
 
-.bullet-sep {
+.badge-sep {
   color: #10B981;
-  font-size: 0.6rem;
+  font-size: 0.65rem;
 }
 
-/* ── DISCREET SKIP BUTTON ────────────────────────────────── */
+.badge-role {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* ── FAIRY SILHOUETTE ACTOR ──────────────────────────────── */
+.intro-fairy-actor {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 5;
+  pointer-events: none;
+  will-change: transform;
+  /* Pure crisp black silhouette with subtle dark edge definition */
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.6));
+  transition: transform 0.04s linear;
+}
+
+/* ── SKIP BUTTON ─────────────────────────────────────────── */
 .intro-skip-btn {
   position: absolute;
   top: clamp(24px, 4vh, 36px);
@@ -318,25 +417,24 @@
 
 /* ── RESPONSIVE MOBILE ADAPTATIONS ───────────────────────── */
 @media (max-width: 768px) {
-  .intro-logo-wrapper {
-    width: 140px;
-    height: 140px;
+  .intro-typography-hero {
+    padding: 20px 16px;
   }
-  .logo-glow-shell {
-    width: 105px;
-    height: 105px;
+  .intro-name-headline {
+    font-size: 1.85rem;
+    letter-spacing: 0.18em;
+    text-indent: 0.18em;
+    flex-direction: column;
+    gap: 4px;
   }
-  .intro-brand-logo {
-    width: 95px;
+  .name-gap {
+    display: none;
   }
-  .intro-name-text {
-    font-size: 1.55rem;
-    letter-spacing: 0.25em;
-    text-indent: 0.25em;
-  }
-  .intro-title-sub {
+  .intro-subtitle-row {
     font-size: 0.68rem;
-    letter-spacing: 1.2px;
+    letter-spacing: 1px;
+    flex-wrap: wrap;
+    justify-content: center;
   }
   .intro-skip-btn {
     top: 20px;
@@ -348,20 +446,19 @@
 /* ── ACCESSIBILITY: REDUCED MOTION ───────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   .intro-fairy-actor,
-  .pixie-dust-canvas {
+  .intro-following-light,
+  .intro-tap-ripple-container {
     display: none !important;
   }
-  .intro-logo-wrapper,
-  .intro-typography-block {
+  .intro-name-headline {
+    color: #FFFFFF !important;
+    text-shadow: none !important;
+  }
+  .intro-subtitle-row {
     opacity: 1 !important;
     transform: none !important;
-    transition: none !important;
   }
-  .magic-halo-ring {
-    opacity: 1 !important;
-    animation: none !important;
-  }
-  .magic-shimmer-sweep {
+  .typography-shimmer-sweep {
     display: none !important;
   }
 }

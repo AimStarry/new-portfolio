@@ -1,11 +1,9 @@
-/* ── FAIRY SILHOUETTE & SURROUNDING LIGHT ORB ────────────── */
+/* ── FAIRY SILHOUETTE ────────────────────────────────────── */
 .fairy-silhouette-root {
   position: relative;
   display: inline-block;
   pointer-events: none;
   user-select: none;
-  filter: drop-shadow(0 0 16px rgba(245, 158, 11, 0.45))
-          drop-shadow(0 0 28px rgba(52, 211, 153, 0.55));
   transform-origin: 48% 44%;
 }
 
@@ -16,88 +14,25 @@
   overflow: visible;
 }
 
-/* ── SURROUNDING LIGHT ORB ANIMATIONS ────────────────────── */
-.fairy-outer-halo {
-  animation: haloBreathe 2.4s ease-in-out infinite alternate;
-  transform-origin: 50px 48px;
-}
-
-.fairy-light-orb {
-  animation: orbPulse 1.8s ease-in-out infinite alternate;
-  transform-origin: 49px 45px;
-}
-
-.fairy-light-core {
-  animation: coreShimmer 1.2s ease-in-out infinite alternate;
-  transform-origin: 48px 43px;
-}
-
-.fairy-light-glint {
-  animation: glintRotate 6s linear infinite;
-  transform-origin: 48px 43px;
-}
-
-@keyframes haloBreathe {
-  0% {
-    transform: scale(0.88);
-    opacity: 0.55;
-  }
-  100% {
-    transform: scale(1.18);
-    opacity: 0.95;
-  }
-}
-
-@keyframes orbPulse {
-  0% {
-    transform: scale(0.92);
-    opacity: 0.85;
-  }
-  100% {
-    transform: scale(1.08);
-    opacity: 1;
-  }
-}
-
-@keyframes coreShimmer {
-  0% {
-    opacity: 0.7;
-    transform: scale(0.9);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1.15);
-  }
-}
-
-@keyframes glintRotate {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-/* ── FAIRY SILHOUETTE WINGS & FIGURE ─────────────────────── */
+/* Fluttering Wings */
 .fairy-silhouette-root.fluttering .wing-front {
   transform-origin: 46px 38px;
-  animation: wingBeatFront 0.13s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite alternate;
+  animation: wingBeatFront 0.12s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite alternate;
 }
 
 .fairy-silhouette-root.fluttering .wing-back {
   transform-origin: 48px 40px;
-  animation: wingBeatBack 0.13s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite alternate;
+  animation: wingBeatBack 0.12s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite alternate;
   animation-delay: -0.04s;
 }
 
 @keyframes wingBeatFront {
   0% {
     transform: scaleX(1) scaleY(1) rotate(0deg);
-    opacity: 0.92;
+    opacity: 0.95;
   }
   100% {
-    transform: scaleX(0.45) scaleY(0.85) rotate(-14deg);
+    transform: scaleX(0.42) scaleY(0.85) rotate(-14deg);
     opacity: 0.7;
   }
 }
@@ -105,41 +40,19 @@
 @keyframes wingBeatBack {
   0% {
     transform: scaleX(1) scaleY(1) rotate(0deg);
-    opacity: 0.78;
+    opacity: 0.8;
   }
   100% {
-    transform: scaleX(0.4) scaleY(0.8) rotate(-12deg);
+    transform: scaleX(0.38) scaleY(0.8) rotate(-12deg);
     opacity: 0.5;
   }
 }
 
-/* Wand Starburst Sparkle */
-.wand-sparkle-tip {
-  animation: wandTwinkle 0.75s ease-in-out infinite alternate;
-  transform-origin: 67px 28px;
-}
-
-@keyframes wandTwinkle {
-  0% {
-    transform: scale(0.85) rotate(0deg);
-    filter: drop-shadow(0 0 2px #FFFFFF);
-  }
-  100% {
-    transform: scale(1.35) rotate(45deg);
-    filter: drop-shadow(0 0 8px #FFFBEB) drop-shadow(0 0 14px #34D399);
-  }
-}
-
-/* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   .fairy-silhouette-root.fluttering .wing-front,
-  .fairy-silhouette-root.fluttering .wing-back,
-  .fairy-outer-halo,
-  .fairy-light-orb,
-  .fairy-light-core,
-  .fairy-light-glint,
-  .wand-sparkle-tip {
+  .fairy-silhouette-root.fluttering .wing-back {
     animation: none !important;
   }
 }
+
 
