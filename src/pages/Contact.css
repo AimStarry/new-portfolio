@@ -134,7 +134,7 @@
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 .eyebrow-accent-line {
@@ -154,13 +154,14 @@
 }
 
 .contact-headline {
-  font-size: clamp(2.5rem, 3.8vw, 3.6rem);
-  line-height: 0.92;
+  font-size: clamp(3.2rem, 4.8vw, 4.5rem);
+  line-height: 0.88;
   font-weight: 900;
-  margin: 0 0 8px;
+  margin: 0 0 10px;
   color: #FFFFFF;
   text-transform: uppercase;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.035em;
+  filter: drop-shadow(0 4px 20px rgba(0, 0, 0, 0.4));
 }
 
 .headline-green {
@@ -169,15 +170,16 @@
   background: linear-gradient(135deg, #10B981 0%, #34D399 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 24px rgba(16, 185, 129, 0.35));
 }
 
 .contact-subheading {
-  font-size: clamp(1.1rem, 1.45vw, 1.35rem);
+  font-size: clamp(1.25rem, 1.75vw, 1.6rem);
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.9);
-  margin: 0 0 8px;
+  color: rgba(255, 255, 255, 0.95);
+  margin: 0 0 10px;
   letter-spacing: -0.015em;
-  line-height: 1.25;
+  line-height: 1.2;
 }
 
 .serif-amber {
@@ -186,14 +188,15 @@
   font-weight: 400;
   color: #F59E0B;
   letter-spacing: -0.01em;
-  margin-left: 4px;
+  margin-left: 5px;
+  font-size: 1.15em;
 }
 
 .contact-bio-lead {
-  font-size: clamp(0.88rem, 1.05vw, 0.95rem);
-  color: rgba(255, 255, 255, 0.65);
-  line-height: 1.55;
-  margin: 0 0 14px;
+  font-size: clamp(0.88rem, 1.05vw, 0.96rem);
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.5;
+  margin: 0 0 12px;
   max-width: 480px;
 }
 
