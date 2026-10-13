@@ -1,0 +1,546 @@
+/* ═══════════════════════════════════════════════════════════════
+   P10 PESQUERA DIEZ EDITORIAL LOADING INTRO
+   Concept: WITHAIM → AIMEE PANGAN → Horizontal Line Break & Split Reveal
+   Aesthetics: Deep Navy/Black | Thick Glowing Line | Emerald & Amber Accents
+   ═══════════════════════════════════════════════════════════════ */
+
+.p10-intro-overlay {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  z-index: 999999;
+  background-color: transparent;
+  overflow: hidden;
+  user-select: none;
+  contain: layout paint;
+  will-change: opacity;
+}
+
+/* ── HARDWARE-ACCELERATED CSS DOT GRID TEXTURE ──────────── */
+.p10-dot-grid-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background-image: radial-gradient(rgba(16, 185, 129, 0.16) 1px, transparent 1px);
+  background-size: 22px 22px;
+  background-position: center center;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.85;
+}
+
+/* ── THE DUAL SHUTTERS (TOP & BOTTOM HALF-SCREENS) ───────── */
+.p10-shutter {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  background-color: #020308;
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Top Shutter: covers 0% to 50% */
+.p10-shutter-top {
+  top: 0;
+  height: 50vh;
+  height: 50dvh;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Bottom Shutter: covers 50% to 100% */
+.p10-shutter-bottom {
+  top: 50vh;
+  top: 50dvh;
+  height: 50vh;
+  height: 50dvh;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+/* Ambient glow within shutters — pure radial gradients without costly blur filters */
+.p10-shutter-ambient-glow {
+  position: absolute;
+  pointer-events: none;
+  border-radius: 50%;
+  transform: translateZ(0);
+}
+
+.top-glow {
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%) translateZ(0);
+  width: min(800px, 92vw);
+  height: min(350px, 45vh);
+  background: radial-gradient(
+    ellipse at center,
+    rgba(16, 185, 129, 0.16) 0%,
+    rgba(16, 185, 129, 0.08) 35%,
+    rgba(6, 78, 59, 0.03) 55%,
+    transparent 72%
+  );
+}
+
+.bottom-glow {
+  bottom: 25%;
+  left: 50%;
+  transform: translate(-50%, 50%) translateZ(0);
+  width: min(800px, 92vw);
+  height: min(350px, 45vh);
+  background: radial-gradient(
+    ellipse at center,
+    rgba(16, 185, 129, 0.12) 0%,
+    rgba(245, 158, 11, 0.06) 30%,
+    rgba(245, 158, 11, 0.02) 50%,
+    transparent 72%
+  );
+}
+
+/* ── EDITORIAL HEADER META BAR (IN TOP SHUTTER) ──────────── */
+.p10-meta-header {
+  position: relative;
+  z-index: 15;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: clamp(20px, 4vh, 36px) clamp(24px, 4.5vw, 56px);
+  font-family: 'DM Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  color: rgba(245, 245, 245, 0.65);
+  text-transform: uppercase;
+}
+
+.p10-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.p10-mono-accent {
+  color: #10B981;
+  font-weight: 700;
+}
+
+.p10-mono-text {
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.p10-brand-mark {
+  color: #F59E0B;
+  font-weight: 700;
+  letter-spacing: 0.35em;
+  padding: 3px 10px;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  border-radius: 4px;
+  background: rgba(245, 158, 11, 0.08);
+}
+
+.p10-status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #10B981;
+  box-shadow: 0 0 8px #10B981;
+}
+
+/* ── TYPOGRAPHY ZONES (ABOVE & BELOW THE LINE) ───────────── */
+.p10-mask-cell {
+  display: inline-block;
+  overflow: hidden;
+  position: relative;
+  vertical-align: top;
+  line-height: 0.95;
+}
+
+/* Top Zone: Anchored directly ABOVE the dividing line */
+.p10-top-zone {
+  position: relative;
+  z-index: 15;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding-bottom: clamp(16px, 2.8vh, 32px);
+  padding-left: clamp(16px, 4vw, 48px);
+  padding-right: clamp(16px, 4vw, 48px);
+}
+
+/* WITHAIM in upper section */
+.p10-withaim-row {
+  position: absolute;
+  bottom: clamp(16px, 2.8vh, 32px);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: clamp(6px, 1.4vw, 24px);
+  width: 100%;
+}
+
+.p10-withaim-char {
+  display: inline-block;
+  font-family: 'Lexend', -apple-system, sans-serif;
+  font-size: clamp(3.0rem, 9.5vw, 7.8rem);
+  font-weight: 900;
+  line-height: 0.95;
+  letter-spacing: -0.01em;
+  color: #FFFFFF;
+  text-shadow: 0 4px 30px rgba(0, 0, 0, 0.8),
+               0 0 40px rgba(16, 185, 129, 0.25);
+  will-change: transform, opacity;
+  transform: translateY(115%) translateZ(0);
+  backface-visibility: hidden;
+  opacity: 0;
+}
+
+.p10-withaim-char.is-aim-core {
+  color: #6EE7B7;
+  text-shadow: 0 0 35px rgba(52, 211, 153, 0.6);
+}
+
+/* AIMEE: Sits cleanly ABOVE the dividing line */
+.p10-aimee-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: clamp(4px, 1.2vw, 18px);
+}
+
+.p10-aimee-char {
+  display: inline-block;
+  font-family: 'Lexend', -apple-system, sans-serif;
+  font-size: clamp(2.8rem, 8.8vw, 7.2rem);
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  color: #FFFFFF;
+  line-height: 0.95;
+  text-shadow: 0 4px 25px rgba(0, 0, 0, 0.8),
+               0 0 35px rgba(255, 255, 255, 0.35);
+  will-change: transform, opacity;
+  transform: translateY(115%) translateZ(0);
+  backface-visibility: hidden;
+  opacity: 0;
+}
+
+/* Bottom Zone: Anchored directly BELOW the dividing line */
+.p10-bottom-zone {
+  position: relative;
+  z-index: 15;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: clamp(16px, 2.8vh, 32px);
+  padding-left: clamp(16px, 4vw, 48px);
+  padding-right: clamp(16px, 4vw, 48px);
+}
+
+/* PANGAN: Sits cleanly BELOW the dividing line */
+.p10-pangan-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: clamp(4px, 1.2vw, 18px);
+  margin-bottom: clamp(16px, 2.4vh, 26px);
+}
+
+.p10-pangan-char {
+  display: inline-block;
+  font-family: 'Lexend', -apple-system, sans-serif;
+  font-size: clamp(2.8rem, 8.8vw, 7.2rem);
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  line-height: 0.95;
+  background: linear-gradient(
+    135deg,
+    #10B981 0%,
+    #34D399 45%,
+    #F59E0B 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 25px rgba(16, 185, 129, 0.45));
+  will-change: transform, opacity;
+  transform: translateY(-115%) translateZ(0);
+  backface-visibility: hidden;
+  opacity: 0;
+}
+
+/* Subtitle / Discipline Bar */
+.p10-role-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  width: 100%;
+  max-width: 620px;
+  will-change: transform, opacity;
+  transform: translateY(14px);
+  opacity: 0;
+}
+
+.p10-role-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(16, 185, 129, 0.35) 50%,
+    rgba(16, 185, 129, 0.1) 100%
+  );
+}
+
+.p10-role-bar .p10-role-line:last-child {
+  background: linear-gradient(
+    90deg,
+    rgba(16, 185, 129, 0.1) 0%,
+    rgba(16, 185, 129, 0.35) 50%,
+    transparent 100%
+  );
+}
+
+.p10-role-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 18px;
+  border-radius: 9999px;
+  background: rgba(16, 185, 129, 0.08);
+  border: 1px solid rgba(16, 185, 129, 0.28);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.4),
+              inset 0 0 12px rgba(16, 185, 129, 0.06);
+}
+
+.p10-amber-bullet {
+  color: #F59E0B;
+  font-size: 0.65rem;
+}
+
+.p10-role-title {
+  font-family: 'DM Mono', monospace;
+  font-size: clamp(0.70rem, 0.9vw, 0.82rem);
+  font-weight: 600;
+  letter-spacing: 0.34em;
+  text-indent: 0.34em;
+  color: rgba(245, 245, 245, 0.9);
+}
+
+/* ── THE THICK CENTER HORIZONTAL LINE (IN FRONT OF TEXT) ─── */
+.p10-center-glow-line {
+  position: absolute;
+  top: 50vh;
+  top: 50dvh;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  transform: translateY(-50%) scaleX(0);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 30;
+  will-change: transform, opacity;
+}
+
+.p10-thick-core {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: #FFFFFF;
+  box-shadow: 0 0 10px #6EE7B7,
+              0 0 20px #10B981,
+              0 0 35px rgba(16, 185, 129, 0.7);
+}
+
+.p10-thick-emerald-glow {
+  position: absolute;
+  top: -12px;
+  left: 0;
+  width: 100%;
+  height: 28px;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(52, 211, 153, 0.15) 30%,
+    rgba(110, 231, 183, 0.6) 50%,
+    rgba(52, 211, 153, 0.15) 70%,
+    transparent 100%
+  );
+  pointer-events: none;
+  transform: translateZ(0);
+}
+
+.p10-center-spark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) translateZ(0);
+  width: 120px;
+  height: 12px;
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse at center,
+    #FFFFFF 0%,
+    #FEF08A 35%,
+    rgba(52, 211, 153, 0.75) 65%,
+    transparent 85%
+  );
+  box-shadow: 0 0 20px rgba(52, 211, 153, 0.85);
+  pointer-events: none;
+}
+
+/* Glowing line edges attached to the shutters as they part */
+.p10-line-edge {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: #FFFFFF;
+  box-shadow: 0 0 8px #6EE7B7,
+              0 0 16px #10B981;
+  z-index: 20;
+}
+
+.p10-line-edge-top {
+  bottom: 0;
+}
+
+.p10-line-edge-bottom {
+  top: 0;
+}
+
+/* ── SKIP BUTTON ─────────────────────────────────────────── */
+.p10-skip-button {
+  position: absolute;
+  top: clamp(20px, 3.8vh, 32px);
+  right: clamp(20px, 4vw, 44px);
+  z-index: 100;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(14, 18, 30, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: rgba(255, 255, 255, 0.8);
+  padding: 8px 16px;
+  border-radius: 9999px;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  font-weight: 600;
+  cursor: pointer;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.4);
+}
+
+.p10-skip-button:hover,
+.p10-skip-button:focus-visible {
+  background: rgba(16, 185, 129, 0.22);
+  border-color: rgba(52, 211, 153, 0.55);
+  color: #34D399;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 22px rgba(16, 185, 129, 0.3);
+  outline: none;
+}
+
+.p10-skip-text {
+  display: inline-block;
+}
+
+.p10-skip-kbd {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.62rem;
+  color: rgba(255, 255, 255, 0.6);
+  font-family: inherit;
+}
+
+/* ── RESPONSIVE MOBILE ADAPTATIONS ───────────────────────── */
+@media (max-width: 768px) {
+  .p10-meta-header {
+    padding: 14px 18px;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+  }
+
+  .p10-meta-center {
+    display: none;
+  }
+
+  .p10-top-zone {
+    padding-bottom: 14px;
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .p10-bottom-zone {
+    padding-top: 14px;
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .p10-withaim-row {
+    gap: 4px;
+    bottom: 14px;
+  }
+
+  .p10-withaim-char {
+    font-size: clamp(2.3rem, 10.5vw, 4.2rem);
+    letter-spacing: -0.01em;
+  }
+
+  .p10-aimee-row,
+  .p10-pangan-row {
+    gap: 3px;
+  }
+
+  .p10-aimee-char,
+  .p10-pangan-char {
+    font-size: clamp(2.2rem, 10vw, 3.8rem);
+    letter-spacing: 0.08em;
+  }
+
+  .p10-role-bar {
+    gap: 8px;
+  }
+
+  .p10-role-pill {
+    padding: 5px 12px;
+    gap: 8px;
+  }
+
+  .p10-role-title {
+    font-size: 0.66rem;
+    letter-spacing: 0.2em;
+    text-indent: 0.2em;
+  }
+
+  .p10-skip-button {
+    top: 12px;
+    right: 12px;
+    padding: 6px 12px;
+  }
+}
+
+/* ── ACCESSIBILITY: REDUCED MOTION ───────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .p10-intro-overlay {
+    display: none !important;
+  }
+}
