@@ -6,31 +6,43 @@ import './About.css'
 
 const technicalDomains = [
   {
-    code: 'SYS // 01',
+    code: 'CORE SPECIALTY // 01',
     title: 'Databases & Architecture',
-    description: 'Relational data modeling, schema normalization, and integrity-first engineering.',
-    skills: ['MySQL', 'PostgreSQL', 'MongoDB', 'Normalized Relational Schemas', 'SQL Query Optimization', 'Relational Integrity'],
+    isPrimary: true,
+    focus: 'Schema Design & Data Integrity',
+    problemStatement:
+      'Architecting normalized relational schemas, optimizing query indexing, and enforcing strict relational integrity for mission-critical institutional records.',
+    skills: ['MySQL', 'PostgreSQL', 'MongoDB', 'Schema Normalization', 'Query Indexing & Optimization', 'Relational Integrity'],
     icon: 'fas fa-database',
   },
   {
-    code: 'SYS // 02',
-    title: 'Frontend Engineering',
-    description: 'Component architecture, responsive layouts, and performance-tuned UI.',
-    skills: ['React', 'Vue.js', 'Angular', 'TypeScript', 'JavaScript (ES6+)', 'HTML5 / CSS3', 'Tailwind CSS'],
-    icon: 'fas fa-code',
-  },
-  {
-    code: 'SYS // 03',
+    code: 'CORE SPECIALTY // 02',
     title: 'Backend & Server Logic',
-    description: 'RESTful endpoints, business logic, authentication, and security controls.',
+    isPrimary: true,
+    focus: 'APIs, Business Logic & Security',
+    problemStatement:
+      'Developing resilient RESTful endpoints, role-based authorization (RBAC), and server-side logic that securely powers complex user workflows.',
     skills: ['PHP', 'Laravel', 'Node.js', 'Python', 'RESTful API Design', 'Role-Based Access Control (RBAC)'],
     icon: 'fas fa-server',
   },
   {
-    code: 'SYS // 04',
+    code: 'CLIENT & INTERFACE // 03',
+    title: 'Frontend Engineering',
+    isPrimary: false,
+    focus: 'Component Architecture & Responsive UI',
+    problemStatement:
+      'Building modular, state-driven user interfaces with accessible HTML semantics, reactive components, and fluid cross-device performance.',
+    skills: ['React', 'Vue.js', 'Angular', 'TypeScript', 'JavaScript (ES6+)', 'Tailwind CSS / CSS3'],
+    icon: 'fas fa-code',
+  },
+  {
+    code: 'SYSTEM DESIGN // 04',
     title: 'UI/UX & Design Systems',
-    description: 'User flows, wireframing, design tokens, and human-centered ergonomics.',
-    skills: ['Figma', 'Design Systems', 'Interactive Prototyping', 'Wireframing', 'User Flow Architecture', 'Responsive Layouts'],
+    isPrimary: false,
+    focus: 'User Flows & Human Ergonomics',
+    problemStatement:
+      'Crafting intuitive user flow wireframes and high-fidelity Figma prototypes governed by consistent design tokens and ergonomic layouts.',
+    skills: ['Figma', 'Interactive Prototyping', 'User Flow Architecture', 'Wireframing', 'Design Tokens'],
     icon: 'fas fa-pen-ruler',
   },
 ]
@@ -44,24 +56,27 @@ const marqueeTools = [
 const trajectorySteps = [
   {
     step: '01',
-    horizon: 'Immediate Horizon',
+    horizon: 'Immediate Aspiration',
     title: 'Junior / Entry-Level Developer',
     roleTarget: 'Database & Full-Stack Development',
-    description: 'Apply production internship experience to build robust database schemas, develop maintainable server-side logic, and craft intuitive frontend interfaces.',
+    description:
+      'Apply production internship experience to build robust database schemas, develop clean server-side logic, and craft intuitive frontend interfaces in an engineering team.',
   },
   {
     step: '02',
-    horizon: 'Growth Horizon',
+    horizon: 'Growth Aspiration',
     title: 'Full-Stack & Database Specialist',
     roleTarget: 'Systems & Data Engineering',
-    description: 'Expand expertise in complex relational models, data normalization, advanced query tuning, and modular component architectures in production systems.',
+    description:
+      'Deepen expertise in multi-entity data architectures, query performance tuning, and scalable component systems across enterprise web stacks.',
   },
   {
     step: '03',
-    horizon: 'Long-Term Horizon',
+    horizon: 'Long-Term Specialization',
     title: 'Enterprise Systems & Data Architect',
-    roleTarget: 'Technical Leadership',
-    description: 'Bridge high-level data architecture with user-centered full-stack applications — designing mission-critical enterprise systems that just work.',
+    roleTarget: 'Architecture & Technical Leadership',
+    description:
+      'Bridge high-level data modeling with user-centered engineering — designing resilient, mission-critical architectures that stand the test of scale.',
   },
 ]
 
@@ -70,13 +85,15 @@ const testimonials = [
     name: 'Marc Canlas',
     role: 'Team Member, Holy Angel University',
     initials: 'MC',
-    content: 'Aimee consistently demonstrates a logical approach to database architecture. Her ability to translate complex data into clean, intuitive interfaces is impressive for a student developer.',
+    content:
+      'Aimee consistently demonstrates a logical approach to database architecture. Her ability to translate complex data into clean, intuitive interfaces is impressive for a student developer.',
   },
   {
     name: 'Samantha Gonzales',
     role: 'Project Leader, Holy Angel University',
     initials: 'SG',
-    content: 'Working with Aimee was a breeze. She has a keen eye for detail and never settles for "good enough" when it comes to user experience, schema integrity, and clean code quality.',
+    content:
+      'Working with Aimee was a breeze. She has a keen eye for detail and never settles for "good enough" when it comes to user experience, schema integrity, and clean code quality.',
   },
 ]
 
@@ -246,7 +263,7 @@ export default function About() {
           </div>
         </section>
 
-        {/* ── 02: TECHNICAL IDENTITY / DEVELOPER WORKSPACE (No Progress Bars) ── */}
+        {/* ── 02: TECHNICAL IDENTITY / DEVELOPER WORKSPACE (Hierarchical Layout) ── */}
         <section className="ed-section ed-tech-section ed-reveal">
           <div className="ed-section-header">
             <div className="ed-section-eyebrow">
@@ -260,7 +277,10 @@ export default function About() {
 
           <div className="ed-domains-grid">
             {technicalDomains.map((domain, i) => (
-              <div key={i} className="ed-domain-card">
+              <div
+                key={i}
+                className={`ed-domain-card ${domain.isPrimary ? 'is-primary-card' : 'is-supporting-card'}`}
+              >
                 <div className="domain-card-top">
                   <span className="domain-sys-code">{domain.code}</span>
                   <div className="domain-icon-wrap">
@@ -268,8 +288,12 @@ export default function About() {
                   </div>
                 </div>
 
-                <h3 className="domain-title">{domain.title}</h3>
-                <p className="domain-desc">{domain.description}</p>
+                <div className="domain-heading-block">
+                  <h3 className="domain-title">{domain.title}</h3>
+                  <span className="domain-focus-badge">{domain.focus}</span>
+                </div>
+
+                <p className="domain-problem-statement">{domain.problemStatement}</p>
 
                 <div className="domain-skills-list">
                   {domain.skills.map((skill, sIdx) => (
@@ -335,7 +359,7 @@ export default function About() {
                 </h4>
 
                 <p className="timeline-narrative">
-                  Architected and engineered an accreditation management portal used university-wide to track real-time compliance across 4 major accrediting bodies: PAASCU, AUN-QA, CHED, and PACUCOA. Designed normalized relational MySQL database schemas, implemented role-based access control (QA Admins, Deans, Heads of Units), and developed evidence repositories.
+                  Architected and engineered the university-wide <strong>Accreditation Management Portal</strong> used to track real-time compliance across 4 major accrediting bodies: PAASCU, AUN-QA, CHED, and PACUCOA. Designed normalized relational MySQL database schemas, implemented role-based access control (QA Admins, Deans, Heads of Units), and developed evidence repositories.
                 </p>
 
                 {/* Contextual Visual Callout for the Accreditation Portal */}
@@ -382,21 +406,17 @@ export default function About() {
                 </h4>
 
                 <p className="timeline-narrative">
-                  Deep academic immersion in Database Management Systems, SQL optimization, data structures, and client-side web architectures. Consistently maintained a 1.5 Cumulative GWA while building full-stack projects in PHP, Vue.js, Angular, Node.js, and MongoDB.
+                  4th-year student maintaining a <strong>1.5 Cumulative GWA</strong> with an emphasis on relational database management, data normalization, and client-side web architectures. Engineered production capstone systems, e-libraries, and RESTful APIs across modern web stacks.
                 </p>
 
                 <div className="timeline-bullet-points">
                   <div className="tl-bullet">
                     <i className="fas fa-check" />
-                    <span>Specialized focus on Relational Database Design, Normalization &amp; Indexing</span>
+                    <span>Relational Database Management: Schema normalization, indexing, and data integrity</span>
                   </div>
                   <div className="tl-bullet">
                     <i className="fas fa-check" />
-                    <span>User Interface &amp; Interaction Design using Figma and Design Tokens</span>
-                  </div>
-                  <div className="tl-bullet">
-                    <i className="fas fa-check" />
-                    <span>Full-Stack Capstone Projects spanning E-Libraries, Portals &amp; APIs</span>
+                    <span>Full-Stack Engineering: Capstone portals built with PHP, Laravel, React, and Vue.js</span>
                   </div>
                 </div>
               </div>
@@ -420,7 +440,7 @@ export default function About() {
                 </h4>
 
                 <p className="timeline-narrative">
-                  Cultivated core analytical reasoning, structured logic, and mathematical foundations that ignited my interest in computer science and database management systems.
+                  Graduated General Academic Strand with academic honors. Built the logical reasoning, structured problem-solving, and mathematical foundations that directed my transition into software engineering.
                 </p>
               </div>
             </div>
@@ -465,35 +485,40 @@ export default function About() {
           />
         </section>
 
-        {/* ── 05: WHERE I'M HEADED (Horizontal Progression Graphic) ── */}
+        {/* ── 05: WHERE I'M HEADED (Connected Horizontal Progression) ── */}
         <section className="ed-section ed-trajectory-section ed-reveal">
           <div className="ed-section-header">
             <div className="ed-section-eyebrow">
               <span className="ed-eyebrow-line" />
-              <span className="ed-eyebrow-text">05 // TRAJECTORY</span>
+              <span className="ed-eyebrow-text">05 // FUTURE TRAJECTORY</span>
             </div>
             <h2 className="ed-section-title">
               Where I'm <span className="ed-serif-italic">Headed.</span>
             </h2>
           </div>
 
-          <div className="ed-trajectory-grid">
-            {trajectorySteps.map((step, idx) => (
-              <div key={idx} className="ed-trajectory-step">
-                <div className="step-top-row">
-                  <span className="step-num">{step.step}</span>
-                  <span className="step-horizon-badge">{step.horizon}</span>
-                </div>
+          <div className="ed-trajectory-progression">
+            <div className="progression-spine-line" aria-hidden="true" />
 
-                <div className="step-accent-line">
-                  <span className="step-dot" />
-                </div>
+            <div className="progression-steps-track">
+              {trajectorySteps.map((step, idx) => (
+                <div key={idx} className="progression-step-col">
+                  <div className="progression-milestone-marker">
+                    <div className="milestone-dot-ring">
+                      <span className="milestone-dot-inner" />
+                    </div>
+                    <span className="milestone-num">{step.step}</span>
+                  </div>
 
-                <h3 className="step-title">{step.title}</h3>
-                <span className="step-role-target">{step.roleTarget}</span>
-                <p className="step-description">{step.description}</p>
-              </div>
-            ))}
+                  <div className="progression-card-inner">
+                    <span className="progression-horizon-tag">{step.horizon}</span>
+                    <h3 className="progression-title">{step.title}</h3>
+                    <span className="progression-role-target">{step.roleTarget}</span>
+                    <p className="progression-desc">{step.description}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </section>
 
@@ -512,8 +537,8 @@ export default function About() {
           <div className="ed-quotes-container">
             {testimonials.map((t, idx) => (
               <div key={idx} className="ed-quote-item">
-                <div className="ed-quote-glyph">“</div>
-                <p className="ed-quote-text">{t.content}</p>
+                <span className="ed-quote-glyph" aria-hidden="true">“</span>
+                <p className="ed-quote-text">"{t.content}"</p>
                 <div className="ed-quote-author">
                   <div className="author-avatar">{t.initials}</div>
                   <div className="author-details">
@@ -525,16 +550,17 @@ export default function About() {
             ))}
           </div>
 
-          {/* Editorial Closing Banner */}
+          {/* Editorial Closing Banner with Subtle Ambient Glow */}
           <div className="ed-closing-banner">
+            <div className="closing-ambient-glow" aria-hidden="true" />
             <h3 className="closing-prompt">Ready to build something intuitive together?</h3>
             <p className="closing-sub">My inbox is always open for opportunities and conversations.</p>
             <div className="closing-actions">
-              <Link to="/contact" className="ed-primary-btn">
+              <Link to="/contact" className="ed-primary-btn closing-primary-btn">
                 <span>Get In Touch</span>
                 <i className="fas fa-arrow-right" />
               </Link>
-              <Link to="/projects" className="ed-secondary-btn">
+              <Link to="/projects" className="ed-secondary-btn closing-secondary-btn">
                 <span>Explore Projects</span>
                 <i className="fas fa-arrow-right" />
               </Link>
