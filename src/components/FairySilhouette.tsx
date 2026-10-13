@@ -5,7 +5,7 @@ interface FairySilhouetteProps {
   className?: string
   width?: number | string
   height?: number | string
-  color?: string
+  silhouetteColor?: string
   glowColor?: string
   isFluttering?: boolean
   style?: React.CSSProperties
@@ -13,15 +13,15 @@ interface FairySilhouetteProps {
 
 /**
  * Reusable Fairy Silhouette component.
- * Features an elegant, balletic fairy in flight with translucent gossamer wings
- * that flutter with organic wing-beat micro-animations.
- * Designed for both the cinematic intro sequence and future custom cursor effects.
+ * Features an elegant dark silhouette of a fairy in graceful flight,
+ * enveloped in a radiant, multi-layered sphere of golden & emerald light.
+ * Designed for both cinematic intro sequences and custom cursor effects.
  */
 export default function FairySilhouette({
   className = '',
-  width = 48,
-  height = 48,
-  color = '#FFFFFF',
+  width = 68,
+  height = 68,
+  silhouetteColor = '#030712',
   glowColor = '#34D399',
   isFluttering = true,
   style = {},
@@ -43,105 +43,157 @@ export default function FairySilhouette({
         className="fairy-svg"
       >
         <defs>
-          <radialGradient id="fairyGlow" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor={glowColor} stopOpacity="0.8" />
-            <stop offset="60%" stopColor={glowColor} stopOpacity="0.2" />
-            <stop offset="100%" stopColor={glowColor} stopOpacity="0" />
+          {/* Luminous Outer Halo of emerald & amber light */}
+          <radialGradient id="fairyOuterHalo" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="#34D399" stopOpacity="0.65" />
+            <stop offset="45%" stopColor={glowColor} stopOpacity="0.35" />
+            <stop offset="75%" stopColor="#059669" stopOpacity="0.12" />
+            <stop offset="100%" stopColor="#059669" stopOpacity="0" />
           </radialGradient>
-          <linearGradient id="wingGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.85" />
-            <stop offset="40%" stopColor="#A7F3D0" stopOpacity="0.6" />
-            <stop offset="100%" stopColor="#FDE047" stopOpacity="0.3" />
+
+          {/* Radiant Core Light Orb surrounding the silhouette */}
+          <radialGradient id="fairyCoreLight" cx="48%" cy="44%" r="48%">
+            <stop offset="0%" stopColor="#FFFFFF" stopOpacity="1" />
+            <stop offset="25%" stopColor="#FEF08A" stopOpacity="0.9" />
+            <stop offset="55%" stopColor="#F59E0B" stopOpacity="0.6" />
+            <stop offset="80%" stopColor="#10B981" stopOpacity="0.3" />
+            <stop offset="100%" stopColor="#10B981" stopOpacity="0" />
+          </radialGradient>
+
+          {/* Delicate rim light for wings */}
+          <linearGradient id="fairyWingRim" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.9" />
+            <stop offset="60%" stopColor="#FDE047" stopOpacity="0.5" />
+            <stop offset="100%" stopColor="#34D399" stopOpacity="0.2" />
           </linearGradient>
+
+          {/* Soft blur for ambient light halo */}
+          <filter id="softGlowBlur" x="-30%" y="-30%" width="160%" height="160%">
+            <feGaussianBlur stdDeviation="3.5" result="blur" />
+            <feComposite in="SourceGraphic" in2="blur" operator="over" />
+          </filter>
         </defs>
 
-        {/* Ethereal aura glow around the fairy */}
-        <circle cx="52" cy="46" r="32" fill="url(#fairyGlow)" className="fairy-aura-pulse" />
+        {/* ── 1. LIGHT SURROUNDING THE FAIRY AS IT FLIES ── */}
+        {/* Outer ambient glow expansion */}
+        <circle
+          cx="50"
+          cy="48"
+          r="46"
+          fill="url(#fairyOuterHalo)"
+          className="fairy-outer-halo"
+        />
 
-        {/* Back Wing (Translucent gossamer) */}
-        <g className="fairy-wing wing-back">
-          <path
-            d="M50 42 C56 26 70 16 84 20 C88 28 82 42 66 48 C58 51 52 46 50 42 Z"
-            fill="url(#wingGrad)"
-            opacity="0.55"
-          />
-          <path
-            d="M52 46 C60 48 76 56 74 68 C66 70 56 60 52 46 Z"
-            fill="url(#wingGrad)"
-            opacity="0.4"
-          />
+        {/* Core luminous orb of light */}
+        <circle
+          cx="49"
+          cy="45"
+          r="30"
+          fill="url(#fairyCoreLight)"
+          className="fairy-light-orb"
+        />
+
+        {/* Soft celestial core highlight behind the fairy */}
+        <circle
+          cx="48"
+          cy="43"
+          r="16"
+          fill="#FFFBEB"
+          opacity="0.85"
+          filter="url(#softGlowBlur)"
+          className="fairy-light-core"
+        />
+
+        {/* Subtle cross starlight glint radiating from the surrounding light */}
+        <g className="fairy-light-glint">
+          <ellipse cx="48" cy="43" rx="24" ry="2" fill="#FFFFFF" opacity="0.45" />
+          <ellipse cx="48" cy="43" rx="2" ry="24" fill="#FFFFFF" opacity="0.45" />
         </g>
 
-        {/* Front Wing (Fluttering with delicate filigree) */}
-        <g className="fairy-wing wing-front">
-          <path
-            d="M48 40 C55 20 72 8 88 14 C94 24 86 42 68 48 C56 52 50 44 48 40 Z"
-            fill="url(#wingGrad)"
-            opacity="0.85"
-          />
-          {/* Subtle wing vein filigree */}
-          <path
-            d="M50 40 Q68 28 84 18 M56 38 Q74 34 82 28 M52 42 Q66 44 76 42"
-            stroke="#FFFFFF"
-            strokeWidth="0.75"
-            strokeOpacity="0.6"
-            fill="none"
-          />
-          {/* Lower secondary wing */}
-          <path
-            d="M50 47 C62 52 80 62 76 76 C66 78 54 64 50 47 Z"
-            fill="url(#wingGrad)"
-            opacity="0.65"
-          />
-        </g>
+        {/* ── 2. ELEGANT DARK SILHOUETTE ── */}
+        <g className="fairy-silhouette-figure">
+          {/* Back Wing Silhouette */}
+          <g className="fairy-wing wing-back">
+            <path
+              d="M48 40 C55 24 70 14 84 18 C88 26 82 40 66 46 C57 49 50 44 48 40 Z"
+              fill={silhouetteColor}
+              opacity="0.78"
+            />
+            {/* Luminous rim highlight on wing leading edge */}
+            <path
+              d="M49 39 C56 25 70 15 84 19"
+              stroke="url(#fairyWingRim)"
+              strokeWidth="0.8"
+              fill="none"
+              opacity="0.7"
+            />
+            <path
+              d="M50 44 C58 46 75 54 73 66 C65 68 55 58 50 44 Z"
+              fill={silhouetteColor}
+              opacity="0.65"
+            />
+          </g>
 
-        {/* Elegant Fairy Body Silhouette in arched flight */}
-        <g className="fairy-body" fill={color}>
-          {/* Head & delicate bun */}
-          <circle cx="48" cy="30" r="4.2" />
-          {/* Hair silhouette with gentle bun */}
-          <path d="M44 30 C43 27 45 24 48 24 C51 24 53 26 52 29 C50 28 46 28 44 30 Z" />
+          {/* Front Wing Silhouette */}
+          <g className="fairy-wing wing-front">
+            <path
+              d="M46 38 C54 18 72 6 88 12 C95 22 86 40 68 46 C55 50 48 42 46 38 Z"
+              fill={silhouetteColor}
+              opacity="0.92"
+            />
+            {/* Subtle luminous edge rim highlight */}
+            <path
+              d="M47 37 C55 19 72 7 88 13"
+              stroke="url(#fairyWingRim)"
+              strokeWidth="1.1"
+              fill="none"
+              opacity="0.9"
+            />
+            {/* Lower secondary wing silhouette */}
+            <path
+              d="M48 45 C60 50 78 60 74 74 C64 76 52 62 48 45 Z"
+              fill={silhouetteColor}
+              opacity="0.8"
+            />
+          </g>
 
-          {/* Arched slender torso & waist */}
-          <path d="M48 34 C49 38 48 44 46 48 C44 44 45 38 47 34 Z" />
+          {/* Balletic Fairy Body Silhouette */}
+          <g className="fairy-body-silhouette" fill={silhouetteColor}>
+            {/* Head silhouette */}
+            <circle cx="47" cy="28" r="4.3" />
+            {/* Delicate hair bun silhouette */}
+            <circle cx="43.5" cy="26" r="3.2" />
 
-          {/* Outstretched forward arm reaching gracefully */}
-          <path
-            d="M48 36 C52 34 58 32 66 30 C66 31 60 35 50 38 Z"
-          />
+            {/* Arching, slender torso & waist */}
+            <path d="M47 32 C48 37 47 43 45 47 C43 43 44 37 46 32 Z" />
 
-          {/* Trailing arm alongside body */}
-          <path
-            d="M46 38 C42 42 36 44 32 46 C32 45 38 41 45 37 Z"
-          />
+            {/* Forward outstretched arm reaching forward */}
+            <path d="M47 35 C52 33 58 31 66 29 C66 30 60 34 49 37 Z" />
 
-          {/* Flowing skirt/tunic whisper */}
-          <path
-            d="M46 47 C48 50 50 56 48 60 C44 58 42 53 44 47 Z"
-            opacity="0.9"
-          />
+            {/* Trailing arm alongside body */}
+            <path d="M45 37 C41 41 35 43 31 45 C31 44 37 40 44 36 Z" />
 
-          {/* Delicate, extended legs with pointed balletic toes */}
-          <path
-            d="M47 50 C44 60 38 72 28 84 C27 84 28 82 34 72 C40 62 43 53 45 50 Z"
-          />
-          <path
-            d="M45 52 C42 62 36 74 24 88 C23 88 24 86 32 75 C38 65 42 56 44 52 Z"
-            opacity="0.8"
-          />
-        </g>
+            {/* Flowing skirt/wrap contour */}
+            <path d="M45 46 C47 49 49 55 47 59 C43 57 41 52 43 46 Z" />
 
-        {/* Magical Wand / Fingertip Star Sparkle Point */}
-        <g className="wand-sparkle-tip">
-          <circle cx="67" cy="29" r="2" fill="#FFFFFF" />
-          <path
-            d="M67 24 L67 34 M62 29 L72 29"
-            stroke="#FDE047"
-            strokeWidth="1.2"
-            strokeLinecap="round"
-          />
+            {/* Extended legs in arched flight with pointed toes */}
+            <path d="M46 49 C43 59 37 72 27 83 C26 83 27 81 33 71 C39 61 42 52 44 49 Z" />
+            <path d="M44 51 C41 61 35 73 23 87 C22 87 23 85 31 74 C37 64 41 55 43 51 Z" opacity="0.85" />
+          </g>
+
+          {/* Wand Tip: Pinpoint starburst sparkle */}
+          <g className="wand-sparkle-tip">
+            <circle cx="67" cy="28" r="1.8" fill="#FFFFFF" />
+            <path
+              d="M67 22 L67 34 M61 28 L73 28"
+              stroke="#FFFBEB"
+              strokeWidth="1.2"
+              strokeLinecap="round"
+            />
+          </g>
         </g>
       </svg>
     </div>
   )
 }
+

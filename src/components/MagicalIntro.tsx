@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from 'react'
+import { useLocation } from 'react-router-dom'
 import FairySilhouette from './FairySilhouette'
 import './MagicalIntro.css'
 
@@ -41,6 +42,7 @@ export default function MagicalIntro({ onComplete, forcePlay = false }: MagicalI
   const [nameRevealed, setNameRevealed] = useState(false)
   const [fairyPos, setFairyPos] = useState({ x: -100, y: -100, angle: 0, visible: false })
 
+  const location = useLocation()
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
   const animFrameRef = useRef<number | null>(null)
   const startTimeRef = useRef<number | null>(null)
@@ -48,18 +50,35 @@ export default function MagicalIntro({ onComplete, forcePlay = false }: MagicalI
   const isCompleteRef = useRef(false)
   const hasEmittedBurstRef = useRef(false)
 
-  // 1. Session check: only play on initial visit or forcePlay
+  const startIntro = useCallback(() => {
+    isCompleteRef.current = false
+    hasEmittedBurstRef.current = false
+    startTimeRef.current = null
+    particlesRef.current = []
+    setIsFadingOut(false)
+    setLogoRevealed(false)
+    setNameRevealed(false)
+    setFairyPos({ x: -100, y: -100, angle: 0, visible: false })
+    setShouldRender(true)
+  }, [])
+
+  // 1. Session check: only play on initial visit or forcePlay or query param replay
   useEffect(() => {
     const hasSeen = sessionStorage.getItem('hasSeenMagicalIntro_v2')
-    const urlParams = new URLSearchParams(window.location.search)
+    const urlParams = new URLSearchParams(location.search)
     const wantsReplay = urlParams.get('intro') === 'replay' || urlParams.get('replay') === 'true'
 
     if (forcePlay || wantsReplay || !hasSeen) {
-      setShouldRender(true)
+      startIntro()
     } else {
       if (onComplete) onComplete()
     }
-  }, [forcePlay, onComplete])
+
+    // Expose programmatic replay helper on window
+    ;(window as unknown as { replayMagicalIntro: () => void }).replayMagicalIntro = () => {
+      startIntro()
+    }
+  }, [forcePlay, location.search, onComplete, startIntro])
 
   // Handle Finish / Skip with smooth fade
   const finishIntro = useCallback(() => {
@@ -224,9 +243,11 @@ export default function MagicalIntro({ onComplete, forcePlay = false }: MagicalI
     resizeCanvas()
     window.addEventListener('resize', resizeCanvas)
 
-    // Check prefers-reduced-motion
+    // Check prefers-reduced-motion (only if user didn't explicitly request replay)
+    const urlParams = new URLSearchParams(location.search)
+    const wantsReplay = urlParams.get('intro') === 'replay' || urlParams.get('replay') === 'true'
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    if (prefersReducedMotion) {
+    if (prefersReducedMotion && !wantsReplay) {
       setLogoRevealed(true)
       setNameRevealed(true)
       const timer = setTimeout(() => finishIntro(), 1500)
@@ -365,7 +386,7 @@ export default function MagicalIntro({ onComplete, forcePlay = false }: MagicalI
       if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current)
       window.removeEventListener('resize', resizeCanvas)
     }
-  }, [shouldRender, finishIntro])
+  }, [shouldRender, finishIntro, location.search])
 
   if (!shouldRender) return null
 
@@ -386,18 +407,18 @@ export default function MagicalIntro({ onComplete, forcePlay = false }: MagicalI
       {/* Pixie Dust Particle Canvas */}
       <canvas ref={canvasRef} className="pixie-dust-canvas" />
 
-      {/* Fairy Silhouette in Flight */}
+      {/* Fairy Silhouette Enveloped in Surrounding Light */}
       {fairyPos.visible && (
         <div
           className="intro-fairy-actor"
           style={{
-            transform: `translate3d(${fairyPos.x - 28}px, ${fairyPos.y - 28}px, 0) rotate(${fairyPos.angle + 15}deg)`,
+            transform: `translate3d(${fairyPos.x - 34}px, ${fairyPos.y - 34}px, 0) rotate(${fairyPos.angle + 12}deg)`,
           }}
         >
           <FairySilhouette
-            width={56}
-            height={56}
-            color="#FFFFFF"
+            width={68}
+            height={68}
+            silhouetteColor="#02040a"
             glowColor="#34D399"
             isFluttering={true}
           />
