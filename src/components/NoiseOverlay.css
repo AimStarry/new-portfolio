@@ -7,7 +7,7 @@
   pointer-events: none;
   user-select: none;
   z-index: 9999;
-  opacity: 0.065; /* Subtle, tactile, high-end film grain texture */
+  opacity: 0.11; /* More pronounced analog static & tactile film grain texture */
   background-repeat: repeat;
   background-size: 160px 160px;
   will-change: background-image;

@@ -32,19 +32,19 @@ export default function NoiseOverlay() {
         const rand = Math.random()
 
         if (rand < 0.5) {
-          // Soft bright grain specks
-          const bright = (Math.random() * 80 + 175) | 0
+          // Crisp bright grain specks
+          const bright = (Math.random() * 70 + 185) | 0
           data[i] = bright
           data[i + 1] = bright
           data[i + 2] = bright
-          data[i + 3] = (Math.random() * 45 + 20) | 0 // Soft 20-65 alpha
+          data[i + 3] = (Math.random() * 60 + 35) | 0 // Crisp 35-95 alpha
         } else {
-          // Soft dark grain specks
-          const dark = (Math.random() * 40) | 0
+          // Rich dark grain specks
+          const dark = (Math.random() * 30) | 0
           data[i] = dark
           data[i + 1] = dark
           data[i + 2] = dark
-          data[i + 3] = (Math.random() * 45 + 20) | 0 // Soft 20-65 alpha
+          data[i + 3] = (Math.random() * 60 + 35) | 0 // Crisp 35-95 alpha
         }
       }
 
