@@ -256,9 +256,6 @@ export default function About() {
             <h2 className="ed-section-title">
               Technical <span className="ed-serif-italic">Domains.</span>
             </h2>
-            <p className="ed-section-subtitle">
-              Grouped by architectural discipline rather than arbitrary percentage bars.
-            </p>
           </div>
 
           <div className="ed-domains-grid">
@@ -284,13 +281,6 @@ export default function About() {
                 </div>
               </div>
             ))}
-          </div>
-
-          <div className="ed-exploring-banner">
-            <div className="exploring-badge">CURRENTLY EXPLORING</div>
-            <div className="exploring-text">
-              Cloud Infrastructure (AWS Academy), Distributed Architecture, Next.js, and Modern State Machines.
-            </div>
           </div>
         </section>
       </div>
@@ -324,9 +314,6 @@ export default function About() {
             <h2 className="ed-section-title">
               The Learning <span className="ed-serif-italic">Journey.</span>
             </h2>
-            <p className="ed-section-subtitle">
-              From foundational academic coursework to production institutional systems.
-            </p>
           </div>
 
           <div className="ed-timeline-spine">
@@ -451,9 +438,6 @@ export default function About() {
               <h2 className="ed-section-title">
                 Verified <span className="ed-serif-italic">Certifications.</span>
               </h2>
-              <p className="ed-section-subtitle">
-                Interactive credential vault spanning industry standards, cloud architecture, and database mastery.
-              </p>
             </div>
 
             <div className="ed-cert-counter">
@@ -491,9 +475,6 @@ export default function About() {
             <h2 className="ed-section-title">
               Where I'm <span className="ed-serif-italic">Headed.</span>
             </h2>
-            <p className="ed-section-subtitle">
-              Aspirations and strategic milestones framed as a continuous forward trajectory.
-            </p>
           </div>
 
           <div className="ed-trajectory-grid">
