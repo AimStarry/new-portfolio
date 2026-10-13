@@ -9,30 +9,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Lexend:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
-  <style>
-    #root-loader { position:fixed;top:0;left:0;width:100vw;height:100vh;display:flex;justify-content:center;align-items:center;background:#060908;z-index:9999;font-family:'Lexend',sans-serif;transition:opacity .6s ease-in-out; }
-    .loader-content { text-align:center;display:flex;flex-direction:column;align-items:center; }
-    .loader-logo { width:80px;margin-bottom:25px;animation:pulse 2s infinite ease-in-out; }
-    .progress-wrapper { width:160px; }
-    .loading-bar { width:100%;height:2px;background:rgba(255,255,255,.1);border-radius:2px;overflow:hidden;margin-bottom:8px; }
-    .progress-fill-l { height:100%;width:0%;background:#10B981;transition:width .3s ease; }
-    .percentage { color:rgba(245,245,245,.5);font-size:.7rem;font-weight:700;letter-spacing:2px; }
-    @keyframes pulse { 0%,100%{transform:scale(1);opacity:.8}50%{transform:scale(1.1);opacity:1} }
-  </style>
 </head>
 <body>
-  <div id="root-loader">
-    <div class="loader-content">
-      <img src="/assets/logo.png" alt="Logo" class="loader-logo" />
-      <div class="progress-wrapper">
-        <div class="loading-bar"><div class="progress-fill-l" id="progress-fill"></div></div>
-        <div class="percentage" id="load-percentage">0%</div>
-      </div>
-    </div>
-  </div>
-  <script>
-    (function(){var p=0,f=document.getElementById('progress-fill'),t=document.getElementById('load-percentage'),i=setInterval(function(){p+=Math.floor(Math.random()*15)+5;if(p>=100){p=100;clearInterval(i);}if(f)f.style.width=p+'%';if(t)t.textContent=p+'%';},150);})();
-  </script>
   <div id="root"></div>
   <script type="module" src="/src/main.tsx"></script>
 </body>

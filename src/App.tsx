@@ -7,6 +7,7 @@ import Projects from './pages/Projects'
 import Contact from './pages/Contact'
 import { useEffect } from 'react'
 import NoiseOverlay from './components/NoiseOverlay'
+import MagicalIntro from './components/MagicalIntro'
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -17,6 +18,7 @@ function ScrollToTop() {
 function App() {
   return (
     <BrowserRouter>
+      <MagicalIntro />
       <NoiseOverlay />
       <ScrollToTop />
       <Navbar />
