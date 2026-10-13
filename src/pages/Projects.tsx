@@ -376,8 +376,6 @@ export default function Projects() {
               <div className="stat-item reveal"><span className="stat-num">4th</span><span className="stat-label">Year IT</span></div>
               <div className="stat-divider" />
               <div className="stat-item reveal"><span className="stat-num">{projectList.length}</span><span className="stat-label">Total Projects</span></div>
-              <div className="stat-divider" />
-              <div className="stat-item reveal"><span className="stat-num">4</span><span className="stat-label">Case Studies</span></div>
             </div>
           </div>
 
