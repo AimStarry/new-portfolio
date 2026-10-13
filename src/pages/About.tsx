@@ -391,25 +391,8 @@ export default function About() {
               </div>
             </div>
 
-            {/* Timeline Event 2: Higher Education (Alternating: Left Narrative, Right Meta & Honors) */}
-            <div className="ed-timeline-entry is-entry-right">
-              <div className="timeline-main-col">
-                <p className="timeline-narrative">
-                  4th-year student maintaining a <strong>1.5 Cumulative GWA</strong> with an emphasis on relational database management, data normalization, and client-side web architectures. Engineered production capstone systems, e-libraries, and RESTful APIs across modern web stacks.
-                </p>
-
-                <div className="timeline-bullet-points">
-                  <div className="tl-bullet">
-                    <i className="fas fa-check" />
-                    <span>Relational Database Management: Schema normalization, indexing, and data integrity</span>
-                  </div>
-                  <div className="tl-bullet">
-                    <i className="fas fa-check" />
-                    <span>Full-Stack Engineering: Capstone portals built with PHP, Laravel, React, and Vue.js</span>
-                  </div>
-                </div>
-              </div>
-
+            {/* Timeline Event 2: Higher Education (Left Meta, Right Narrative & Bullets) */}
+            <div className="ed-timeline-entry is-entry-left">
               <div className="timeline-sidebar-col">
                 <div className="timeline-node-indicator">
                   <span className="node-ring" />
@@ -428,6 +411,23 @@ export default function About() {
                 <div className="timeline-highlight-pill">
                   <i className="fas fa-star" />
                   <span>1.5 CUMULATIVE GWA</span>
+                </div>
+              </div>
+
+              <div className="timeline-main-col">
+                <p className="timeline-narrative">
+                  4th-year student maintaining a <strong>1.5 Cumulative GWA</strong> with an emphasis on relational database management, data normalization, and client-side web architectures. Engineered production capstone systems, e-libraries, and RESTful APIs across modern web stacks.
+                </p>
+
+                <div className="timeline-bullet-points">
+                  <div className="tl-bullet">
+                    <i className="fas fa-check" />
+                    <span>Relational Database Management: Schema normalization, indexing, and data integrity</span>
+                  </div>
+                  <div className="tl-bullet">
+                    <i className="fas fa-check" />
+                    <span>Full-Stack Engineering: Capstone portals built with PHP, Laravel, React, and Vue.js</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -502,9 +502,9 @@ export default function About() {
           />
         </section>
 
-        {/* ── 05: WHERE I'M HEADED (Connected Horizontal Progression - Right Aligned) ── */}
+        {/* ── 05: WHERE I'M HEADED (Connected Horizontal Progression - Left Aligned) ── */}
         <section className="ed-section ed-trajectory-section ed-reveal">
-          <div className="ed-section-header is-right-aligned">
+          <div className="ed-section-header">
             <div className="ed-section-eyebrow">
               <span className="ed-eyebrow-line" />
               <span className="ed-eyebrow-text">05 // FUTURE TRAJECTORY</span>
@@ -548,9 +548,9 @@ export default function About() {
           </div>
         </section>
 
-        {/* ── 06: WORDS OF COLLABORATION & CLOSING ── */}
+        {/* ── 06: WORDS OF COLLABORATION & CLOSING (Right Aligned) ── */}
         <section className="ed-section ed-quotes-section ed-reveal">
-          <div className="ed-section-header">
+          <div className="ed-section-header is-right-aligned">
             <div className="ed-section-eyebrow">
               <span className="ed-eyebrow-line" />
               <span className="ed-eyebrow-text">06 // ENDORSEMENTS</span>
