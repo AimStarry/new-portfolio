@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { SideScrollIndicator } from '../components/SideScrollIndicator'
+import ProjectDetailModal from '../components/ProjectDetailModal'
 import './Projects.css'
 
 export interface Project {
@@ -47,7 +48,11 @@ export const projectList: Project[] = [
     ],
     tools: ['Laravel', 'MySQL', 'PHP', 'HTML', 'CSS', 'JavaScript'],
     thumbnail: '/assets/accreditation-portal-main.png',
-    screenshots: ['/assets/accreditation-portal-main.png'],
+    screenshots: [
+      '/assets/accreditation-portal-main.png',
+      '/assets/accreditation-schema.png',
+      '/assets/compliance_records.png'
+    ],
     demoVideoUrl: null,
     demoUrl: null,
     githubUrl: null
@@ -313,23 +318,13 @@ export default function Projects() {
     }
   }
 
-  const selectProject = (p: Project) => {
-    if (p.hasCaseStudy) {
-      setSearchParams({ id: String(p.id) })
-      window.scrollTo({ top: 0, behavior: 'smooth' })
-      setTimeout(initScrollAnimations, 100)
-    } else if (p.demoUrl) {
-      window.open(p.demoUrl, '_blank', 'noreferrer')
-    } else if (p.githubUrl) {
-      window.open(p.githubUrl, '_blank', 'noreferrer')
-    }
-  }
+  const selectProject = useCallback((p: Project) => {
+    setSearchParams({ id: String(p.id) })
+  }, [setSearchParams])
 
   const closeDetails = useCallback(() => {
     setSearchParams({})
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-    setTimeout(initScrollAnimations, 100)
-  }, [initScrollAnimations, setSearchParams])
+  }, [setSearchParams])
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -361,8 +356,7 @@ export default function Projects() {
       {/* ═══════════════════════════════════════════════════
           GALLERY VIEW (SHOWCASE + BENTO GRID)
           ═══════════════════════════════════════════════════ */}
-      {!selected && (
-        <div className="gallery-view">
+      <div className="gallery-view">
           {/* Eyebrow & Page Header */}
           <div className="section-eyebrow reveal">
             <span className="eyebrow-line" /><span className="eyebrow-text">Portfolio</span><span className="eyebrow-line" />
@@ -623,31 +617,15 @@ export default function Projects() {
                     )}
 
                     {/* View Details button for projects with details */}
-                    {project.hasCaseStudy && (
-                      <button
-                        type="button"
-                        className="bento-btn bento-btn-study"
-                        onClick={() => selectProject(project)}
-                      >
-                        <span>View Details</span>
-                        <i className="fas fa-arrow-right" />
-                      </button>
-                    )}
-
-                    {/* Video preview button if demo video exists */}
-                    {!project.hasCaseStudy && project.demoVideoUrl && (
-                      <button
-                        type="button"
-                        className="bento-btn bento-btn-video"
-                        onClick={() => {
-                          setLightboxImg(null)
-                          selectProject(project)
-                        }}
-                      >
-                        <i className="fas fa-play-circle" />
-                        <span>Demo Video</span>
-                      </button>
-                    )}
+                    {/* View Details button for all projects */}
+                    <button
+                      type="button"
+                      className="bento-btn bento-btn-study"
+                      onClick={() => selectProject(project)}
+                    >
+                      <span>View Details</span>
+                      <i className="fas fa-arrow-right" />
+                    </button>
                   </div>
                 </div>
               </div>
@@ -661,150 +639,20 @@ export default function Projects() {
             </div>
           )}
         </div>
-      )}
 
       {/* ═══════════════════════════════════════════════════
-          IN-DEPTH CASE STUDY VIEW (FOR SUBSTANTIAL PROJECTS)
+          LUCAS AUFRÈRE INSPIRED EDITORIAL POP-UP MODAL
           ═══════════════════════════════════════════════════ */}
       {selected && (
-        <div className="detail-view">
-          <div className="navigation-header reveal">
-            <button onClick={closeDetails} className="back-link">
-              <i className="fas fa-arrow-left" /> Back to All Projects
-            </button>
-            <span className="detail-breadcrumb">
-              <span>Portfolio</span>
-              <i className="fas fa-chevron-right" />
-              <span>Projects</span>
-              <i className="fas fa-chevron-right" />
-              <strong className="crumb-active">{selected.name}</strong>
-            </span>
-          </div>
-
-          <div className="detail-hero reveal">
-            <div className="detail-hero-meta">
-              <span className="detail-category-tag">{selected.category}</span>
-              <span className="detail-study-badge">
-                <i className="fas fa-layer-group" /> Project Details &amp; Architecture
-              </span>
-            </div>
-            <h2 className="detail-hero-title">{selected.name}</h2>
-            <p className="detail-hero-subtitle">{selected.shortDesc}</p>
-          </div>
-
-          <div className="detail-layout">
-            {/* Visuals Gallery */}
-            <div className="visuals-gallery reveal">
-              {selected.demoVideoUrl && (
-                <div className="video-container">
-                  <div className="media-label"><i className="fas fa-play-circle" /> Walkthrough Demo Video</div>
-                  <video controls className="gallery-video" src={selected.demoVideoUrl}>
-                    Your browser does not support the video tag.
-                  </video>
-                </div>
-              )}
-
-              {selected.screenshots?.length > 0 && (
-                <div className="screenshots-block">
-                  <div className="media-label">
-                    <i className="fas fa-images" /> System Screenshots &amp; Architecture Diagrams
-                    <span className="media-count">{selected.screenshots.length}</span>
-                  </div>
-                  <div className="screenshots-scroll">
-                    {selected.screenshots.map((img, si) => (
-                      <div key={si} className="gallery-img-wrapper" onClick={() => setLightboxImg(img)}>
-                        <img
-                          src={img}
-                          className="gallery-img"
-                          alt={`${selected.name} screenshot ${si + 1}`}
-                        />
-                        <span className="zoom-indicator"><i className="fas fa-search-plus" /> Expand</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* In-Depth Information Pane */}
-            <div className="info-pane reveal">
-              <div className="info-group">
-                <h3>The Challenge &amp; Purpose</h3>
-                <p>{selected.fullDescription}</p>
-              </div>
-
-              <div className="info-group">
-                <h3>My Role &amp; Technical Ownership</h3>
-                <div className="role-display">
-                  <i className="fas fa-user-cog role-icon" />
-                  <span>{selected.role}</span>
-                </div>
-              </div>
-
-              {selected.contributions?.length > 0 && (
-                <div className="info-group">
-                  <h3>Key Engineering Contributions</h3>
-                  <ul className="contributions-list">
-                    {selected.contributions.map((item, ci) => (
-                      <li key={ci} style={{ animationDelay: `${ci * 0.08}s` }}>
-                        <i className="fas fa-check-circle contrib-check" />
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-
-              <div className="info-group">
-                <h3>Architecture &amp; Tech Stack</h3>
-                <div className="tag-bar">
-                  {selected.tools.map((t, ti) => (
-                    <span key={ti} className="skill-tag">{t}</span>
-                  ))}
-                </div>
-              </div>
-
-              {/* Action Links */}
-              <div className="action-links">
-                {selected.demoUrl ? (
-                  <a href={selected.demoUrl} target="_blank" rel="noreferrer" className="btn-launch">
-                    <i className="fas fa-external-link-alt" /> Launch Live Demo
-                    <span className="btn-shine" />
-                  </a>
-                ) : selected.id === 8 ? (
-                  <div className="no-demo-notice">
-                    <i className="fas fa-university" />
-                    <span>Internal institutional portal deployed across the Holy Angel University network (restricted intranet access).</span>
-                  </div>
-                ) : (
-                  <div className="no-demo-notice">
-                    <i className="fas fa-info-circle" />
-                    <span>Live demo unavailable due to environment constraints.</span>
-                  </div>
-                )}
-
-                {selected.githubUrl ? (
-                  <a href={selected.githubUrl} target="_blank" rel="noreferrer" className="btn-source">
-                    <i className="fab fa-github" /> Inspect Source Code
-                  </a>
-                ) : selected.id === 8 ? (
-                  <div className="no-source-notice">
-                    <i className="fas fa-shield-alt" />
-                    <span>Source code is confidential under Holy Angel University OIE institutional policy.</span>
-                  </div>
-                ) : (
-                  <div className="no-source-notice">
-                    <i className="fas fa-lock" />
-                    <span>Source code private due to client/proprietary terms.</span>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
+        <ProjectDetailModal
+          project={selected}
+          allProjects={projectList}
+          onClose={closeDetails}
+          onSelectProject={selectProject}
+        />
       )}
 
-      {/* Lightbox for screenshots and diagrams */}
+      {/* Global Lightbox if used outside modal */}
       {lightboxImg && (
         <div className="lightbox" onClick={() => setLightboxImg(null)}>
           <button className="lightbox-close" onClick={() => setLightboxImg(null)} aria-label="Close image preview">

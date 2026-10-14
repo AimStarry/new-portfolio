@@ -279,6 +279,7 @@
 .intro-typography-hero.lit-up .word-pangan {
   background: linear-gradient(135deg, #10B981 0%, #34D399 50%, #F59E0B 100%);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   filter: drop-shadow(0 0 20px rgba(16, 185, 129, 0.65));
 }

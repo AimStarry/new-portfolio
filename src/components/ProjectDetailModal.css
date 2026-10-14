@@ -1,0 +1,1108 @@
+/* ═══════════════════════════════════════════════════════════════
+   LUCAS AUFRÈRE 3D EDITORIAL PROJECT MODAL
+   Split-Screen: Pinned Static Left Panel + 3D Angled Right Stage
+   Aesthetics: Brutalist Sharp Edges, Right-Edge Text Transparency, No Text Cutoffs
+   ═══════════════════════════════════════════════════════════════ */
+
+.editorial-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  z-index: 99999;
+  background-color: #030508;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  user-select: none;
+  animation: modalFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.99);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ── 1. TOP HEADER META BAR ───────────────────────────────── */
+.editorial-modal-header {
+  position: relative;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: clamp(10px, 1.8vh, 18px) clamp(24px, 4vw, 56px);
+  width: 100%;
+  flex-shrink: 0;
+}
+
+.editorial-modal-meta-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.editorial-project-counter {
+  font-family: 'DM Mono', monospace;
+  font-size: clamp(0.70rem, 0.85vw, 0.80rem);
+  letter-spacing: 0.22em;
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+}
+
+.editorial-category-pill {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.16em;
+  padding: 3px 10px;
+  border-radius: 0; /* SHARP EDGE */
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  color: #34D399;
+  text-transform: uppercase;
+}
+
+.editorial-project-switcher {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(15, 20, 32, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 0; /* SHARP EDGE */
+  padding: 5px 14px;
+}
+
+.editorial-switcher-btn {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.7);
+  font-family: 'DM Mono', monospace;
+  font-size: 0.70rem;
+  letter-spacing: 0.12em;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  padding: 2px 4px;
+  transition: all 0.2s ease;
+}
+
+.editorial-switcher-btn:hover {
+  color: #10B981;
+}
+
+.switcher-separator {
+  color: rgba(255, 255, 255, 0.25);
+  font-size: 0.72rem;
+}
+
+/* Floating Circular Close Button (Top Right) */
+.editorial-modal-close {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  color: #05070E;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.6);
+}
+
+.editorial-modal-close:hover {
+  transform: scale(1.08) rotate(90deg);
+  background: #6EE7B7;
+  color: #030509;
+  box-shadow: 0 0 25px rgba(110, 231, 183, 0.65);
+}
+
+.close-x {
+  font-size: 1.1rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+/* ── 2. MAIN SPLIT BODY: STATIC LEFT OVERLAY + 3D RIGHT ───────────── */
+.editorial-modal-body {
+  position: relative;
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  padding: 0;
+}
+
+/* ── STATIC PINNED LEFT OVERLAY PANEL (TRANSLUCENT HUD OVER 3D CARDS) ── */
+.editorial-static-panel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: clamp(340px, 30vw, 440px);
+  height: 100%;
+  max-height: 100%;
+  overflow: hidden !important; /* CRITICAL: NO VERTICAL SCROLL AT ALL */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  z-index: 30; /* FLOATING HUD OVERLAY ABOVE 3D CARDS */
+  pointer-events: none; /* Let wheel and gestures pass through to 3D track */
+  padding: 0 clamp(24px, 3.5vw, 48px);
+  /* Atmospheric translucent gradient: allows passing slides and images to clearly show through */
+  background: linear-gradient(
+    to right,
+    rgba(3, 5, 8, 0.88) 0%,
+    rgba(3, 5, 8, 0.72) 58%,
+    rgba(3, 5, 8, 0.28) 84%,
+    transparent 100%
+  );
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-right: none;
+  /* Soft right-side transparency fade on the overlay text pane */
+  -webkit-mask-image: linear-gradient(to right, #000000 64%, rgba(0, 0, 0, 0.72) 84%, rgba(0, 0, 0, 0.20) 100%);
+  mask-image: linear-gradient(to right, #000000 64%, rgba(0, 0, 0, 0.72) 84%, rgba(0, 0, 0, 0.20) 100%);
+}
+
+.static-panel-inner {
+  height: 100%;
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: clamp(10px, 1.8vh, 20px) 0;
+  box-sizing: border-box;
+  pointer-events: none;
+}
+
+.static-eyebrow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: clamp(6px, 1vh, 10px);
+}
+
+.static-date-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.static-live-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  color: #34D399;
+}
+
+.static-live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #10B981;
+  box-shadow: 0 0 8px #10B981;
+}
+
+/* Title with right-side gradient transparency fade */
+.static-project-title {
+  font-family: 'Lexend', -apple-system, sans-serif;
+  font-size: clamp(1.8rem, 2.5vw, 2.75rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  text-transform: uppercase;
+  margin: 0 0 clamp(6px, 1.2vh, 12px) 0;
+  background: linear-gradient(to right, #FFFFFF 58%, rgba(255, 255, 255, 0.62) 84%, rgba(255, 255, 255, 0.22) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 4px 16px rgba(0, 0, 0, 0.95));
+}
+
+/* Subtitle with subtle right-side transparency fade */
+.static-project-role {
+  font-family: 'Georgia', 'Playfair Display', serif;
+  font-style: italic;
+  font-size: clamp(0.92rem, 1.15vw, 1.10rem);
+  margin: 0 0 clamp(8px, 1.4vh, 14px) 0;
+  line-height: 1.35;
+  background: linear-gradient(to right, rgba(245, 245, 245, 0.88) 58%, rgba(245, 245, 245, 0.58) 84%, rgba(245, 245, 245, 0.22) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.9));
+}
+
+/* Summary with subtle right-side transparency fade */
+.static-project-desc {
+  font-size: clamp(0.78rem, 0.88vw, 0.86rem);
+  line-height: 1.58;
+  margin: 0 0 clamp(10px, 1.6vh, 16px) 0;
+  background: linear-gradient(to right, rgba(255, 255, 255, 0.72) 58%, rgba(255, 255, 255, 0.44) 84%, rgba(255, 255, 255, 0.18) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.9));
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Dynamic slide indicator */
+.static-slide-indicator {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: clamp(10px, 1.6vh, 16px);
+}
+
+.indicator-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  color: rgba(255, 255, 255, 0.5);
+  flex-shrink: 0;
+}
+
+.indicator-track {
+  flex: 1;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 0; /* SHARP EDGE */
+  overflow: hidden;
+}
+
+.indicator-fill {
+  height: 100%;
+  background: #10B981;
+  box-shadow: 0 0 8px #10B981;
+  border-radius: 0; /* SHARP EDGE */
+  transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Spec list */
+.static-spec-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: clamp(12px, 1.8vh, 18px);
+}
+
+.static-spec-row {
+  display: grid;
+  grid-template-columns: 72px 1fr;
+  align-items: baseline;
+  font-size: 0.76rem;
+}
+
+.static-spec-row .spec-label {
+  font-family: 'DM Mono', monospace;
+  letter-spacing: 0.2em;
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 0.68rem;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.95);
+}
+
+.static-spec-row .spec-val {
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.95);
+}
+
+.static-actions-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  pointer-events: auto; /* Clickable action links */
+}
+
+.static-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: 0; /* SHARP EDGE */
+  pointer-events: auto;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.static-btn-primary {
+  background: #10B981;
+  color: #030509;
+  border: 1px solid #10B981;
+  box-shadow: 0 4px 16px rgba(16, 185, 129, 0.35);
+}
+
+.static-btn-primary:hover {
+  background: #34D399;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(52, 211, 153, 0.5);
+}
+
+.static-btn-secondary {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.static-btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #FFFFFF;
+}
+
+/* ── 3. RIGHT 3D HORIZONTAL STAGE ("PULLING FROM SIDE") ──── */
+.editorial-3d-stage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  overflow-x: auto;
+  overflow-y: hidden;
+  perspective: 1400px; /* 3D PERSPECTIVE CANVAS */
+  perspective-origin: 20% 50%;
+  transform-style: preserve-3d;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  scroll-padding-left: clamp(360px, 31vw, 460px);
+  padding: clamp(24px, 4vh, 44px) clamp(100px, 14vw, 220px) clamp(24px, 4vh, 44px) clamp(360px, 31vw, 460px);
+  gap: clamp(40px, 5.5vw, 76px);
+  scrollbar-width: thin;
+  scrollbar-color: rgba(16, 185, 129, 0.3) transparent;
+  z-index: 10;
+}
+
+.editorial-3d-stage::-webkit-scrollbar {
+  height: 6px;
+}
+
+.editorial-3d-stage::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.editorial-3d-stage::-webkit-scrollbar-thumb {
+  background: rgba(16, 185, 129, 0.25);
+  border-radius: 0;
+}
+
+/* ── 3D ANGLED CARDS ("PULLING FROM SIDE") ───────────────── */
+.editorial-3d-card {
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+  width: min(840px, 58vw);
+  height: clamp(410px, 63vh, 515px); /* BALANCED HEIGHT: FLOATS UNCLIPPED WITHOUT TOUCHING STAGE EDGES */
+  border-radius: 0 !important; /* CRITICAL: SHARP EDGES NOT ROUNDED */
+  background: linear-gradient(145deg, #090D16 0%, #05070D 100%);
+  border: 1px solid rgba(255, 255, 255, 0.11);
+  /* Pure 3D perspective rotation — no skewY that pushes corners into the ceiling */
+  transform: perspective(1200px) rotateY(-11deg);
+  transform-origin: left center;
+  transform-style: preserve-3d;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s ease, border-color 0.4s ease;
+  box-shadow: -22px 28px 75px rgba(0, 0, 0, 0.85),
+              0 0 45px rgba(16, 185, 129, 0.05);
+  overflow: hidden;
+  position: relative;
+}
+
+.editorial-3d-card.is-active-card,
+.editorial-3d-card:hover {
+  transform: perspective(1200px) rotateY(-5deg) translateY(-2px);
+  border-color: rgba(52, 211, 153, 0.35);
+  box-shadow: -26px 36px 90px rgba(0, 0, 0, 0.95),
+              0 0 60px rgba(16, 185, 129, 0.14);
+}
+
+/* ── CARD 1: 3D HERO ARTBOARD ────────────────────────────── */
+.hero-3d-card {
+  cursor: pointer;
+}
+
+.hero-3d-media-wrap {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #020306;
+  border-radius: 0 !important; /* SHARP EDGE */
+}
+
+.hero-3d-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  border-radius: 0 !important; /* SHARP EDGE */
+  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hero-3d-card:hover .hero-3d-img {
+  transform: scale(1.035);
+}
+
+.hero-3d-reflection {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.08) 0%,
+    transparent 35%,
+    rgba(0, 0, 0, 0.5) 100%
+  );
+  pointer-events: none;
+}
+
+.hero-3d-badge {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 14px;
+  border-radius: 0 !important; /* SHARP EDGE */
+  background: rgba(14, 18, 30, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  font-family: 'DM Mono', monospace;
+  font-size: 0.70rem;
+  letter-spacing: 0.18em;
+  color: #FFFFFF;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.h3b-index {
+  color: #10B981;
+  font-weight: 700;
+}
+
+.hero-3d-zoom-hint {
+  position: absolute;
+  bottom: 24px;
+  right: 24px;
+  background: rgba(14, 18, 30, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #FFFFFF;
+  padding: 8px 16px;
+  border-radius: 0 !important; /* SHARP EDGE */
+  font-family: 'DM Mono', monospace;
+  font-size: 0.70rem;
+  letter-spacing: 0.14em;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: all 0.2s ease;
+}
+
+.hero-3d-card:hover .hero-3d-zoom-hint {
+  background: rgba(16, 185, 129, 0.25);
+  border-color: rgba(52, 211, 153, 0.6);
+  color: #6EE7B7;
+  transform: translateY(-2px);
+}
+
+/* ── CARD 2 & 4: SPLIT LAYOUT INSIDE 3D CARDS ─────────────── */
+.card-3d-split-layout {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  height: 100%;
+  padding: clamp(14px, 2vh, 24px);
+  gap: clamp(14px, 2vw, 26px);
+  align-items: stretch; /* FILLS FULL HEIGHT */
+}
+
+.c3d-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: clamp(8px, 1.3vh, 13px);
+  height: 100%;
+  overflow-y: auto; /* ALLOWS CLEAN INTERNAL SCROLL IF NEEDED SO NOTHING CUTS OFF */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(16, 185, 129, 0.3) transparent;
+  padding-right: 6px;
+}
+
+.c3d-left::-webkit-scrollbar {
+  width: 4px;
+}
+
+.c3d-left::-webkit-scrollbar-thumb {
+  background: rgba(16, 185, 129, 0.3);
+}
+
+/* Metric Tiles Grid (225+ / 36 style) - SHARP EDGES */
+.metric-tiles-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.metric-tile {
+  background: rgba(16, 22, 36, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 0 !important; /* CRITICAL: SHARP EDGES NOT ROUNDED */
+  padding: 8px 12px;
+  transition: all 0.2s ease;
+}
+
+.metric-tile:hover {
+  border-color: rgba(16, 185, 129, 0.4);
+  transform: translateY(-2px);
+}
+
+.metric-tile-index {
+  display: inline-block;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.60rem;
+  letter-spacing: 0.2em;
+  color: #10B981;
+  margin-bottom: 2px;
+}
+
+.metric-tile-label {
+  font-family: 'Lexend', sans-serif;
+  font-size: clamp(0.74rem, 0.82vw, 0.82rem);
+  font-weight: 600;
+  color: #FFFFFF;
+  line-height: 1.25;
+  margin: 0;
+}
+
+.c3d-narrative-block {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.c3d-eyebrow {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.22em;
+  color: #F59E0B;
+}
+
+.c3d-title {
+  font-family: 'Lexend', sans-serif;
+  font-size: clamp(1.05rem, 1.28vw, 1.30rem);
+  font-weight: 800;
+  color: #FFFFFF;
+  line-height: 1.2;
+  margin: 0;
+}
+
+/* Narrative text: generous line-height, fully readable, NEVER cut off */
+.c3d-desc {
+  font-size: clamp(0.76rem, 0.82vw, 0.82rem);
+  line-height: 1.48;
+  color: rgba(255, 255, 255, 0.80);
+  margin: 0;
+}
+
+.c3d-right {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.c3d-media-frame {
+  width: 100%;
+  height: 100%;
+  border-radius: 0 !important; /* SHARP EDGE */
+  overflow: hidden;
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #020306;
+  cursor: pointer;
+}
+
+.c3d-frame-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  border-radius: 0 !important; /* SHARP EDGE */
+  transition: transform 0.5s ease;
+}
+
+.c3d-media-frame:hover .c3d-frame-img {
+  transform: scale(1.025);
+}
+
+.c3d-frame-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 12px 18px;
+  background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.85) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.70rem;
+  letter-spacing: 0.14em;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* ── CARD 3: 3D GALLERY & VIDEO ───────────────────────────── */
+.gallery-3d-card {
+  padding: clamp(16px, 2.2vh, 26px);
+}
+
+.c3d-gallery-inner {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.c3d-gallery-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.c3d-index-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.74rem;
+  letter-spacing: 0.2em;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.c3d-screens-grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+.c3d-screen-tile {
+  position: relative;
+  height: 100%;
+  border-radius: 0 !important; /* SHARP EDGE */
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  background: #020306;
+  cursor: pointer;
+}
+
+.c3d-screen-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  border-radius: 0 !important; /* SHARP EDGE */
+  transition: transform 0.45s ease;
+}
+
+.c3d-screen-tile:hover .c3d-screen-img {
+  transform: scale(1.03);
+}
+
+.c3d-screen-hover {
+  position: absolute;
+  inset: 0;
+  background: rgba(3, 6, 12, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #FFFFFF;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.c3d-screen-tile:hover .c3d-screen-hover {
+  opacity: 1;
+}
+
+.c3d-video-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+}
+
+.c3d-video-player {
+  width: 100%;
+  max-height: 320px;
+  border-radius: 0 !important; /* SHARP EDGE */
+  overflow: hidden;
+  background: #000;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.c3d-video-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  color: rgba(255, 255, 255, 0.6);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ── CARD 4: CONTRIBUTIONS & LAUNCHPAD ────────────────────── */
+.c3d-contrib-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  padding-right: 6px;
+}
+
+.c3d-contrib-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background: rgba(16, 22, 36, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 0 !important; /* SHARP EDGE */
+  padding: 7px 11px;
+}
+
+.c3d-contrib-check {
+  width: 18px;
+  height: 18px;
+  border-radius: 0 !important; /* SHARP EDGE */
+  background: rgba(16, 185, 129, 0.18);
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  color: #10B981;
+  font-size: 0.60rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.c3d-contrib-text {
+  font-size: 0.80rem;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.c3d-launchpad-col {
+  flex-direction: column;
+  gap: 16px;
+  justify-content: center;
+}
+
+.c3d-panel-box {
+  width: 100%;
+  background: rgba(12, 16, 28, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 0 !important; /* SHARP EDGE */
+  padding: 16px 18px;
+}
+
+.c3d-panel-title {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+  margin: 0 0 10px 0;
+}
+
+.c3d-chips-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.c3d-chip {
+  padding: 4px 10px;
+  background: rgba(16, 185, 129, 0.08);
+  border: 1px solid rgba(16, 185, 129, 0.28);
+  border-radius: 0 !important; /* SHARP EDGE */
+  color: #6EE7B7;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.70rem;
+  letter-spacing: 0.08em;
+}
+
+.c3d-action-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.c3d-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: 0 !important; /* SHARP EDGE */
+  font-family: 'DM Mono', monospace;
+  font-size: 0.74rem;
+  letter-spacing: 0.14em;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.c3d-btn-primary {
+  background: #10B981;
+  color: #030509;
+  border: 1px solid #10B981;
+  box-shadow: 0 4px 18px rgba(16, 185, 129, 0.35);
+}
+
+.c3d-btn-primary:hover {
+  background: #34D399;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(52, 211, 153, 0.5);
+}
+
+.c3d-btn-secondary {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #FFFFFF;
+}
+
+.c3d-btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.c3d-btn-back {
+  background: transparent;
+  border: 1px dashed rgba(255, 255, 255, 0.18);
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.c3d-btn-back:hover {
+  border-color: #10B981;
+  color: #10B981;
+}
+
+/* ── 4. FOOTER SLIDE CONTROLS & PAGINATION ────────────────── */
+.editorial-modal-footer {
+  position: relative;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: clamp(10px, 1.8vh, 18px) clamp(24px, 4vw, 56px);
+  width: 100%;
+  flex-shrink: 0;
+}
+
+.footer-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.footer-nav-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 0 !important; /* SHARP EDGE */
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 0.75rem;
+  transition: all 0.2s ease;
+}
+
+.footer-nav-btn:hover:not(:disabled) {
+  background: rgba(16, 185, 129, 0.25);
+  border-color: #10B981;
+  color: #6EE7B7;
+  transform: scale(1.08);
+}
+
+.footer-nav-btn:disabled {
+  opacity: 0.25;
+  cursor: not-allowed;
+}
+
+.footer-dots {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.footer-dot-pill {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 4px 12px;
+  border-radius: 0 !important; /* SHARP EDGE */
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.footer-dot-pill:hover {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.footer-dot-pill.active {
+  background: #10B981;
+  border-color: #10B981;
+  box-shadow: 0 0 14px rgba(16, 185, 129, 0.5);
+}
+
+.dot-index {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  color: rgba(255, 255, 255, 0.65);
+  font-weight: 600;
+}
+
+.footer-dot-pill.active .dot-index {
+  color: #030509;
+  font-weight: 800;
+}
+
+.footer-hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+/* ── 5. LIGHTBOX OVERLAY ──────────────────────────────────── */
+.editorial-lightbox-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100005;
+  background: rgba(0, 0, 0, 0.95);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+  cursor: zoom-out;
+  animation: modalFadeIn 0.2s ease forwards;
+}
+
+.lightbox-close-btn {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #FFFFFF;
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lightbox-img {
+  max-width: 92vw;
+  max-height: 88vh;
+  object-fit: contain;
+  border-radius: 0 !important; /* SHARP EDGE */
+  box-shadow: 0 16px 50px rgba(0, 0, 0, 0.9);
+}
+
+/* ── 6. RESPONSIVE MEDIA QUERIES ──────────────────────────── */
+@media (max-width: 1024px) {
+  .editorial-modal-body {
+    display: flex;
+    flex-direction: column;
+    padding: 0 20px;
+    gap: 20px;
+  }
+
+  .editorial-static-panel {
+    position: relative;
+    width: 100%;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 0 0 14px 0;
+    background: none;
+    pointer-events: auto;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+
+  .editorial-3d-stage {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    height: auto;
+    padding: 10px 0;
+    scroll-padding-left: 0;
+  }
+
+  .editorial-3d-card {
+    width: 82vw;
+    height: 55vh;
+    transform: perspective(1000px) rotateY(-8deg);
+  }
+}
+
+@media (max-width: 640px) {
+  .editorial-3d-card {
+    width: 90vw;
+    height: 52vh;
+    transform: none; /* Flat on small mobile screens */
+  }
+
+  .card-3d-split-layout {
+    grid-template-columns: 1fr;
+    overflow-y: auto;
+  }
+
+  .footer-hint {
+    display: none;
+  }
+}
