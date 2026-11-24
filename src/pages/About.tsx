@@ -350,7 +350,7 @@ export default function About() {
                   <span className="timeline-node-line" />
                 </div>
                 <div className="timeline-meta-row">
-                  <span className="timeline-period-pill">JUNE 2026 — SEPTEMBER 2026</span>
+                  <span className="timeline-period-pill">JUNE 2026 — OCTOBER 2026</span>
                   <span className="timeline-org-type">PRODUCTION INTERNSHIP</span>
                 </div>
                 <h3 className="timeline-org-name">Office of Institutional Effectiveness</h3>
