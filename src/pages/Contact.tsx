@@ -252,8 +252,8 @@ export default function Contact() {
           {/* Resume CTA & Social Links */}
           <div className="contact-actions-row">
             <a
-              href="/assets/Pangan_Resume.pdf"
-              download="Pangan_Resume.pdf"
+              href="/assets/Pangan_Aimee_Resume.pdf"
+              download="Pangan_Aimee_Resume.pdf"
               className="contact-resume-pill"
             >
               <i className="fas fa-download" />

@@ -95,9 +95,9 @@ export default function Navbar() {
 
             {/* Mobile-only resume button inside drawer */}
             <a
-              href="/assets/Pangan_Resume.pdf"
+              href="/assets/Pangan_Aimee_Resume.pdf"
               className="nav-resume-pill nav-resume-mobile"
-              download="Pangan_Resume.pdf"
+              download="Pangan_Aimee_Resume.pdf"
               onClick={() => setOpen(false)}
             >
               <span>RESUME</span>
@@ -108,9 +108,9 @@ export default function Navbar() {
           <div className="nav-actions-group">
             {/* Desktop-only resume link */}
             <a
-              href="/assets/Pangan_Resume.pdf"
+              href="/assets/Pangan_Aimee_Resume.pdf"
               className="nav-resume-pill nav-resume-desktop"
-              download="Pangan_Resume.pdf"
+              download="Pangan_Aimee_Resume.pdf"
             >
               <span>RESUME</span>
               <i className="fas fa-arrow-down" aria-hidden="true" />

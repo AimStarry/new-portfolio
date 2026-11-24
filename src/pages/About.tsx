@@ -242,8 +242,8 @@ export default function About() {
 
               <div className="ed-bio-actions">
                 <a
-                  href="/assets/Pangan_Resume.pdf"
-                  download="Pangan_Resume.pdf"
+                  href="/assets/Pangan_Aimee_Resume.pdf"
+                  download="Pangan_Aimee_Resume.pdf"
                   className="ed-primary-btn"
                 >
                   <i className="fas fa-download" />
